@@ -8,6 +8,6 @@ y.tab.h
 *.temp
 *.o
 *xsm
-spl_progs/
+# spl_progs/
 .DS_Store
 .vscode/

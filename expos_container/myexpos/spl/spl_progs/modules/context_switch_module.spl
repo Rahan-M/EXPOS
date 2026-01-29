@@ -1,0 +1,47 @@
+alias currentPID R0;
+currentPID = [SYSTEM_STATUS_TABLE+1];
+
+alias process_table_entry R1;
+process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+// We push BP to stack because, if this module could be called from a system call
+// a system call saves its context itself except the BP register
+// the expl code when compiled doesn't save BP register for system calls by itself
+SP=SP+1;
+[SP]=BP;
+
+[process_table_entry + 12] = SP % 512;
+[process_table_entry + 14] = PTBR;
+[process_table_entry + 15] = PTLR;
+// finished till 4
+
+alias nextPID R2;
+nextPID=(currentPID+1)%16;
+while(nextPID!=currentPID) do
+    if([PROCESS_TABLE + 16*nextPID + 4] == READY || [PROCESS_TABLE + 16*nextPID + 4] == CREATED) then
+        break;
+    endif;
+    nextPID=(nextPID+1)%16;
+endwhile;
+
+alias new_process_table R3;
+new_process_table = PROCESS_TABLE + nextPID * 16;
+
+//Set back Kernel SP, PTBR , PTLR
+SP =  [new_process_table + 11] * 512 + [new_process_table + 12] ; // Switch kernel stack
+PTBR = [new_process_table + 14];
+PTLR = [new_process_table + 15];
+
+[SYSTEM_STATUS_TABLE+1]=nextPID;
+
+if([new_process_table + 4] == CREATED) then
+    [new_process_table + 4] = RUNNING;
+	[new_process_table + 9] = 0;
+	SP = [new_process_table + 13];
+	ireturn;
+endif;
+
+[new_process_table + 4] = RUNNING;
+BP=[SP];
+SP=SP-1;
+return;

@@ -1,0 +1,57 @@
+// loadi(mem_page_no , disk_block_no);
+loadi(63, 13); // load library code from disk, loaded to disk during startup
+loadi(64, 14);// these will be logical page 0 and 1
+loadi(65, 7); // 65 and 66 stores init code
+loadi(66, 8);
+loadi(16,29); // INT 7 Module
+loadi(17,30);
+loadi(22, 35); // INT 10 Module
+loadi(23, 36);
+loadi(2, 15); // exception handler routine
+loadi(3, 16);
+loadi(4, 17); // timer interrupt handler
+loadi(5, 18);
+
+// Init programm
+PTBR=PAGE_TABLE_BASE+20;
+PTLR=10;
+
+//Library page 0 and 1
+[PTBR+0] = 63;
+[PTBR+1] = "0100";
+[PTBR+2] = 64;
+[PTBR+3] = "0100";
+
+//Heap page 2 and 3
+[PTBR+4] = 78;
+[PTBR+5] = "0110";
+[PTBR+6] = 79;
+[PTBR+7] = "0110";
+
+//Code page 4, 5, 6, 7
+[PTBR+8] = 65;
+[PTBR+9] = "0100";
+[PTBR+10] = 66;
+[PTBR+11] = "0100";
+[PTBR+12] = -1;
+[PTBR+13] = "0000";
+[PTBR+14] = -1;
+[PTBR+15] = "0000";
+
+//Stack page 8, 9
+[PTBR+16] = 76;
+[PTBR+17] = "0110";
+[PTBR+18] = 77;
+[PTBR+19] = "0110";
+
+[PROCESS_TABLE + 16 + 1] = 1;
+[PROCESS_TABLE + 16 + 4] = CREATED;
+[PROCESS_TABLE + 16 + 11] = 80;
+[PROCESS_TABLE + 16 + 12] = 0;
+[PROCESS_TABLE + 16 + 13] = 8 * 512;
+[PROCESS_TABLE + 16 + 14] = PAGE_TABLE_BASE + 20;
+[PROCESS_TABLE + 16 + 15] = 10;
+[76 * 512] = [65 * 512 + 1];
+
+return;
+

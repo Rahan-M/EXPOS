@@ -1,0 +1,38 @@
+// ENTRY
+// SWITCH FROM USER STACK TO KERNEL STACK OF CURRENT PROCESS AND SAVE THE REGISTER CONTEXT USING BACKUP
+// index 1 of system status table stores PID
+// 13th index of process table stores user stack pointer i.e UPTR
+breakpoint;
+[PROCESS_TABLE + ( [SYSTEM_STATUS_TABLE + 1] * 16) + 13] = SP;
+// Setting SP to UArea Page number * 512 - 1
+SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 11] * 512 - 1;
+
+// The scheduler assumes that the timer handler would have saved the 
+// user context of the current process (values of R0-R19 and BP registers) 
+// into the kernel stack before the call. 
+backup;
+
+// It also assumes that the state of the process has been changed to READY
+[PROCESS_TABLE + ( [SYSTEM_STATUS_TABLE + 1] * 16) + 4] = READY;
+
+// However, the machine's SP register will still point to the top of the 
+// kernel stack of the currently running process at the time of the call.
+
+alias i R6;
+i=0;
+while(i<16) do
+    if([PROCESS_TABLE + 16*i + 4] != TERMINATED) then
+        [PROCESS_TABLE + 16*i] = [PROCESS_TABLE + 16*i]+1;
+    endif;
+    i=i+1;
+endwhile;
+
+call MOD_5;
+
+// EXIT
+restore;
+// reset SP from UPTR
+SP=[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1])*16 + 13];
+[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1])*16 + 0]=0;
+breakpoint;
+ireturn;
