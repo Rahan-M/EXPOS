@@ -1,0 +1,7 @@
+load --os $HOME/myexpos/spl/spl_progs/os_startup_st13.xsm
+load --library ../expl/library.lib
+load --int=7 $HOME/myexpos/spl/spl_progs/int7_st10.xsm
+load --int=timer $HOME/myexpos/spl/spl_progs/sample_timer_st12.xsm
+load --init $HOME/myexpos/expl/samples/oddNos.xsm
+load --idle $HOME/myexpos/expl/expl_progs/idle_st12.xsm
+load --module 7 $HOME/myexpos/spl/spl_progs/modules/boot_module_st13.xsm

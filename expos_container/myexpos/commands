@@ -1,0 +1,5 @@
+load --library ../expl/library.lib
+load --int=10 ../spl/spl_progs/haltprog.xsm
+load --exhandler ../spl/spl_progs/haltprog.xsm
+load --init ../expl/expl_progs/squares.xsm
+load --os ../spl/spl_progs/os_startup.xsm

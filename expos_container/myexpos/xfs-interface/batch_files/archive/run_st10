@@ -1,0 +1,3 @@
+load --os $HOME/myexpos/spl/spl_progs/os_startup_st10.xsm
+load --init $HOME/myexpos/expl/expl_progs/onetotwentymq.xsm
+load --int=7 $HOME/myexpos/spl/spl_progs/int7_st10.xsm
