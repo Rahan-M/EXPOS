@@ -183,3 +183,31 @@ git add .
 clear
 git status
 exit
+cd myexpos/expl
+./expl ./samples/mq_primes.expl 
+./expl ./samples/mq_primes.expl 
+./expl ./samples/mq_primes.expl 
+clear
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../expl
+./expl ./samples/mq_e.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ..expl
+cd ../expl
+./expl ./samples/mq_e.xsm
+./expl ./samples/mq_e.expl
+clear
+cd ../xfs-interface/
+./xfs-interface 
+clear
+cd ../xsm
+./xsm
+exit
