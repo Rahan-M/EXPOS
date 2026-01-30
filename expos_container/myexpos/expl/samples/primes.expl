@@ -30,7 +30,6 @@ begin
     breakpoint;
     while ( num <= 100 ) do
         if(isPrime(num)==1) then
-            temp = exposcall ( "Write" , -2, "Prime ");
             temp = exposcall ( "Write" , -2, num );
         endif;
         num = num + 1;

@@ -156,3 +156,30 @@ cd ../xsm
 ./xsm --debug
 exit
 exit
+clear
+cd myexpos/xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
+cd myexpos/spl
+cd ..expl
+cd ../expl
+cd ./samples/oddNos.expl
+./expl  ./samples/oddNos.expl
+./expl  ./samples/evenNos.expl
+./expl  ./samples/primes.expl
+cd ../xfs-interface/
+./xfs
+./xfs-interface 
+cd ../xsm
+./xsm
+git
+git add .
+clear
+git status
+exit

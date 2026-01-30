@@ -8,7 +8,6 @@ begin
     breakpoint;
     while ( num <= 100 ) do
         if((num % 2) == 1 ) then
-            temp = exposcall ( "Write" , -2, "Odd " );
             temp = exposcall ( "Write" , -2, num );
         endif;
         num = num + 1;
