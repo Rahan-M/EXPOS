@@ -1,0 +1,12 @@
+load --os $HOME/myexpos/spl/spl_progs/os_startup_st13.xsm
+load --library ../expl/library.lib
+load --int=7 $HOME/myexpos/spl/spl_progs/interrupts/int7.xsm
+load --int=10 $HOME/myexpos/spl/spl_progs/interrupts/int10.xsm
+load --exhandler $HOME/myexpos/spl/spl_progs/interrupts/int10.xsm
+load --int=timer $HOME/myexpos/spl/spl_progs/interrupts/sample_timer_st14.xsm
+load --init $HOME/myexpos/expl/samples/oddNos.xsm
+load --idle $HOME/myexpos/expl/expl_progs/idle_st12.xsm
+load --module 0 $HOME/myexpos/spl/spl_progs/Modules/module_0_resource_manager.xsm
+load --module 4 $HOME/myexpos/spl/spl_progs/Modules/module_4_device_manager.xsm
+load --module 5 $HOME/myexpos/spl/spl_progs/Modules/module_5_context_switch.xsm
+load --module 7 $HOME/myexpos/spl/spl_progs/Modules/module_7_boot_module.xsm

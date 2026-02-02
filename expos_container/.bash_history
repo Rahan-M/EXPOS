@@ -212,3 +212,73 @@ cd ../xsm
 ./xsm
 exit
 exit
+cd myexpos/spl/
+./spl ./spl_progs/Modules/boot_module_st15.spl 
+
+./spl ./spl_progs/Modules/boot_module_st15.spl 
+clear
+./spl ./spl_progs/Modules/module_0_resource_manager.spl 
+./spl ./spl_progs/Modules/module_0_resource_manager.spl 
+./spl ./spl_progs/Modules/module_4_device_manager.spl 
+./spl ./spl_progs/interrupts/int7.spl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../spl
+./spl ./spl_progs/Modules/module_7_boot_module.spl
+cd ../xfs-interface/
+./xfs-interface 
+clear
+cd ../xsm
+./xsm
+./xsm --debug
+cd ../xspl
+cd ../spl
+./spl
+./spl ./spl_progs/Modules/module_0_resource_manager.spl
+cd ../xfs
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm --debug
+./xsm --debug --timer 5000
+./xsm --debug --timer 1000
+./xsm --timer 1000
+./xsm --timer 1024
+./xsm --debug
+./xsm --debug
+clear
+./xsm --debug
+clear
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xms
+./xsm
+cd ../spl
+./xsm --debug
+cd ../xsm
+./xsm --debug
+clear
+cd ../spl
+./spl ./spl_progs/Modules/module_0_resource_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+git branch
+exit

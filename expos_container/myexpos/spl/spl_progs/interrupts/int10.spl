@@ -15,11 +15,7 @@ if(i>=16) then
     halt;
 endif;
 
-call MOD_5;
-
-restore;
-// reset SP from UPTR
-SP=[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1])*16 + 13];
-[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1])*16 + 0]=0; // set mode flag to 0
-breakpoint;
-ireturn;
+call MOD_5; 
+// The return within context switch module will take it back to 
+// the address store on top of the kernel stack of new process
+// the new process will never be this so it never gets executed again

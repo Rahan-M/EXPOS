@@ -13,9 +13,11 @@ loadi(4, 17); // timer interrupt handler
 loadi(5, 18);
 loadi(50, 63); // Module 5, Scheduler
 loadi(51, 64);
-loadi(40, 53);
+loadi(40, 53); // Module 0, Resource Manager
 loadi(41, 54);
-[TERMINAL_STATUS_TABLE]=0
+loadi(48, 61); // Module 4, Device Manager
+loadi(49, 62);
+[TERMINAL_STATUS_TABLE]=0;
 
 // Init programm
 PTBR=PAGE_TABLE_BASE+20;
