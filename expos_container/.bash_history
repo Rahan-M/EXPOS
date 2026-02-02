@@ -211,3 +211,4 @@ clear
 cd ../xsm
 ./xsm
 exit
+exit
