@@ -282,3 +282,49 @@ cd ../xsm
 ./xsm
 git branch
 exit
+cd myexpos/xfs-interface/
+load --os $HOME/myexpos/spl/spl_progs/os_startup_st13.xsm
+./xfs-interface 
+cd ../spl
+../expl
+cd ../expl
+./expl ./samples/primes.expl 
+./expl ./samples/oddNos.expl 
+./expl ./samples/evenNos.expl.expl 
+./expl ./samples/evenNos.expl 
+clear
+cd ../xfs
+cd ../xfs-interface/
+./xfs-interface 
+clear
+./xfs-interface 
+cd ../expl
+./expl ./expl_progs/idle_st12.expl 
+./expl ./expl_progs/idle_st12_2.expl 
+exit
+cd myexpos/xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm --debug
+./xsm --debug
+clear
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/mod7_2.spl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
