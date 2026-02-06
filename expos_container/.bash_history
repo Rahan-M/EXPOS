@@ -282,3 +282,14 @@ cd ../xsm
 ./xsm
 git branch
 exit
+cd myexpos/xsm
+./xsm
+clear
+cd ../spl
+./spl ../spl/spl_progs/Modules/module_0_resource_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm 
+git checkout -b "stage_14"
+exit
