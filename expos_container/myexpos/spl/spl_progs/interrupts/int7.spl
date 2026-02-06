@@ -10,6 +10,8 @@ SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 11] * 512 - 1;
 
 
 // find file descriptor
+//userSP-5=sys call number userSP-4=arg1, -3=arg2, -2=arg3, -1=retval, -0=IP+2
+// translate userSP-4
 alias physicalPageNum R1;
 alias offset R2;
 alias fileDescPhysicalAddr R3;

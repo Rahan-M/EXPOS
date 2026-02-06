@@ -328,3 +328,9 @@ cd ../xfs-interface/
 cd ../xsm
 ./xsm
 exit
+cd ../xsm
+cd myexpos/xsm
+./xsm
+./xsm --debug
+./xsm
+exit

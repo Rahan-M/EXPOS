@@ -13,7 +13,6 @@ SP=SP+1;
 [process_table_entry + 12] = SP % 512;
 [process_table_entry + 14] = PTBR;
 [process_table_entry + 15] = PTLR;
-// finished till 4
 
 alias nextPID R2;
 nextPID=(currentPID+1)%16;

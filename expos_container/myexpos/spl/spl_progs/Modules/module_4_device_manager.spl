@@ -5,7 +5,7 @@ if(functionNum!=3) then
     return;
 endif;
 
-// add R2 to currentPID explicitly incase of erros
+// assign R2 to currentPID explicitly incase of erros
 multipush(R1, R2, R3);
 R1=8;
 call MOD_0;
