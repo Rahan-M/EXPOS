@@ -22,6 +22,7 @@ if(functionNum==8) then
 // terminal was released by the holding process by invoking the release
 // terminal function.
 endif;
+
 if(functionNum==9) then
     if([TERMINAL_STATUS_TABLE+1]!=currentPID) then
         R0=-1;
