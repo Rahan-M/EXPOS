@@ -3,6 +3,8 @@ loadi(63, 13); // load library code from disk, loaded to disk during startup
 loadi(64, 14);// these will be logical page 0 and 1
 loadi(65, 7); // 65 and 66 stores init code
 loadi(66, 8);
+loadi(14, 27); // INT 6: Read
+loadi(15, 28);
 loadi(16,29); // INT 7 Module
 loadi(17,30);
 loadi(22, 35); // INT 10 Module
