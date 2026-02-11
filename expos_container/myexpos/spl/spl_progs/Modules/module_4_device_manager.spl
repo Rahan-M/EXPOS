@@ -1,23 +1,49 @@
 alias functionNum R1;
 alias currentPID R2;
 
-if(functionNum!=3) then
+if(functionNum==3) then
+    // functionNum==3, terminal write
+    // assign R2 to currentPID explicitly incase of erros
+    // acquire terminal
+    multipush(R1, R2, R3);
+    R1=8; // function num for acquire terminal
+    call MOD_0;
+    multipop(R1, R2, R3);
+    print(R3);
+
+    // release terminal
+    multipush(R1, R2, R3);
+    R1=9;
+    call MOD_0;
+    // R4=R0; // save return value if needed
+    multipop(R1, R2, R3);
     return;
 endif;
 
-// assign R2 to currentPID explicitly incase of erros
-// acquire terminal
-multipush(R1, R2, R3);
-R1=8;
-call MOD_0;
-multipop(R1, R2, R3);
-print(R3);
+if(functionNum==4) then
+    // terminal read
+    // acquire terminal
+    multipush(R1, R2, R3);
+    R1=8; // function num for acquire terminal
+    // R2 already stored currentPID
+    call MOD_0;
+    multipop(R1, R2, R3);
 
-// release terminal
-multipush(R1, R2, R3);
-R1=9;
-call MOD_0;
-// R4=R0; // save return value if needed
-multipop(R1, R2, R3);
+    read;
+
+    [PROCESS_TABLE + currentPID*16 + 4]=WAIT_TERMINAL;
+    multipush(R1, R2, R3);
+    call MOD_5;
+
+    // After console interrupt and return from scheduler
+    multipop(R1, R2, R3); 
+
+    alias wordAddr R4;
+    wordAddr=[PTBR + 2 * (R3 / 512)] + (R3 % 512);
+    [wordAddr]=[PROCESS_TABLE + currentPID*16 + 8];
+    return;
+endif;
+
+
 
 return;

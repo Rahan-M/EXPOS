@@ -1,5 +1,5 @@
 [PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 9] = 5;
-// index 5 of PROCESS_TABLE stores mode flag that is set to current system call no which is 5 for write
+// index 9 of PROCESS_TABLE stores mode flag that is set to current system call no which is 5 for write
 alias userSP R0;
 userSP = SP;
 
