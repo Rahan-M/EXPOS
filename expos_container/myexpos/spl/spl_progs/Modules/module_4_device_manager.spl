@@ -26,7 +26,6 @@ if(functionNum==4) then
     multipush(R1, R2, R3);
     R1=8; // function num for acquire terminal
     // R2 already stored currentPID
-    print("Got here");
     call MOD_0;
     multipop(R1, R2, R3);
 
@@ -40,10 +39,8 @@ if(functionNum==4) then
     multipop(R1, R2, R3); 
 
     alias wordAddr R4;
-    wordAddr=[PTBR + 2 * (R3 / 512)] + (R3 % 512);
+    wordAddr=[PTBR + 2 * (R3 / 512)] * 512 + (R3 % 512);
     [wordAddr]=[PROCESS_TABLE + currentPID*16 + 8];
-    R9=[wordAddr];
-    print(R9);
     return;
 endif;
 

@@ -1,52 +1,3 @@
-curl -sSf https://raw.githubusercontent.com/eXpOSNitc/expos-bootstrap/main/download.sh | sh
-cd myexpos/
-make
-make
-ls
-clear
-exit
-ls
-cd myexpos/
-ls
-cd xfs-interface/
-./xfs-interface 
-ls
-cd ..
-ls
-cd spl
-ls
-cd spl_progs/
-ls
-cd ..
-cd ..
-cd xfs-interface/
-./xfs-interface 
-cd ..
-./xsm
-cd xsm/
-./xsm
-clear
-exit
-cd myexpos/xfs-interface/
-./xfs-interface 
-cd ..
-cd xsm
-./xsm
-cd ..
-cd xfs-interface/
-./xfs-interface 
-cd ..
-cd xsm/
-./xsm
-cd ..
-exit
-cd myexpos/
-cd xfs-interface/
-./xfs-interface 
-cd ..
-cd xsm
-./xsm
-cd ..
 cd spl
 ./spl $HOME/expos/spl/spl_progs/sum.spl
 ./spl $HOME/myexpos/spl/spl_progs/sum.spl
@@ -452,6 +403,96 @@ cd ../xfs-interface/
 cd ../spl
 ./spl ./spl_progs/interrupts/int6.spl
 ./spl ./spl_progs/interrupts/int6.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
+cd myexpos/spl
+./spl ./spl_progs/interrupts/int3_console.spl
+./spl ./spl_progs/interrupts/int6.spl
+./spl ./spl_progs/Modules/module_4_device_manager.
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+
+./spl ./spl_progs/Modules/module_7_boot_module.spl.
+./spl ./spl_progs/Modules/module_7_boot_module.spl
+exit
+cd myexpos/expl
+./expl ./samples/gcd.expl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
+cd myexpos/spl
+./spl ./spl_progs/interrupts/int3_console.spl
+./spl ./spl_progs/interrupts/int6.spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+./spl ./spl_progs/Modules/module_7_boot_module.spl
+cd ../expl
+./expl ./samples/gcd.expl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./samples/gcd.expl
+cd ../xfs-interface/
+run ./batch_files/run_st16 
+./xfs-interface 
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int6.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xms
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+./spl ./spl_progs/interrupts/int6.spl
+exit
+cd myexpos/xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int6.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+exeit
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int6.spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
 cd ../xfs-interface/
 ./xfs-interface 
 cd ../xsm

@@ -31,15 +31,7 @@ then
     R1=4; // function number of terminal read
     R2=[SYSTEM_STATUS_TABLE+1];
     R3=wordAddr;
-    print("Got here");
     call MOD_4;
-
-    alias word R8;
-    word=[PTBR + 2 * (R3 / 512)] + (R3 % 512);
-    [word]=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 8];
-    R9=[word];
-    print("YO");
-    print(R9);
 
     multipop(R0, R1, R2, R3, R4, R5);
     [retAddr]=0;
