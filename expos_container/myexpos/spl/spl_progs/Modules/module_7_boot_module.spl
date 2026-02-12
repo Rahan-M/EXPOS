@@ -13,6 +13,8 @@ loadi(2, 15); // exception handler routine
 loadi(3, 16);
 loadi(4, 17); // timer interrupt handler
 loadi(5, 18);
+loadi(8, 21); // console interrupt handler
+loadi(9, 22);
 loadi(50, 63); // Module 5, Scheduler
 loadi(51, 64);
 loadi(40, 53); // Module 0, Resource Manager
@@ -64,7 +66,7 @@ PTLR=10;
 
 // Initialize STATE field of all other process table entries to TERMINATED
 alias i R6;
-i=3;
+i=2;
 while(i<16) do
     [PROCESS_TABLE + 16*i + 4] = TERMINATED;
     i=i+1;

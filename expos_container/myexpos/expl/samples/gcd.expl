@@ -1,23 +1,19 @@
 decl
     int gcd(int a, int b);
-enddecl;
+enddecl
 
 int gcd(int a, int b){
     decl
         int ans;
     enddecl
-
-    if(a<b) then
-        ans=gcd(b,a);
-    else
-        if(a%b == 0) then
+    begin
+        if((a%b) == 0) then
             ans = b;
         else
             ans=gcd(b, a%b);
         endif;
-    endif
-
-    return ans;
+        return ans;
+    end
 }
 
 int main(){

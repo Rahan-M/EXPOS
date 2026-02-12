@@ -334,3 +334,126 @@ cd myexpos/xsm
 ./xsm --debug
 ./xsm
 exit
+cd myexpos/xsm/
+./xsm
+clear
+cd ../spl
+./spl ./spl_progs/interrupts/int6.spl
+./spl ./spl_progs/interrupts/int6.spl
+./spl ./spl_progs/interrupts/int6.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int3_console.spl
+./spl ./spl_progs/os_startup.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_7_boot_module.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+exit
+cd myexpos/expl
+./expl ./samples/a.expl 
+cd ../xfs-interface/
+./xfs-interface 
+clear
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./samples/gcd.expl
+clear
+cd ../spl
+cd cd ../xsm
+cd  ../xsm
+./xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/int6.spl
+./spl ./spl_progs/interrupts/int6.spl
+cd ..xfs
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ../spl/spl_progs/interrupts/int3_console.spl
+./spl ../spl/spl_progs/interrupts/int3_console.spl
+./spl ../spl/spl_progs/interrupts/int3_console.spl
+./spl ../spl/spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./fileSystem.h 
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ../spl/spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+./spl ./spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./xfs-interface 
+./spl ./spl_progs/interrupts/int3_console.spl
+cd ../spl
+./spl ./spl_progs/interrupts/int3_console.spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../spl
+./spl ./spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/interrupts/int3_console.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../spl
+./spl ./spl_progs/interrupts/int6.spl
+./spl ./spl_progs/interrupts/int6.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
