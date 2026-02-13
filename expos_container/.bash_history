@@ -1,7 +1,3 @@
-cd spl
-./spl $HOME/expos/spl/spl_progs/sum.spl
-./spl $HOME/myexpos/spl/spl_progs/sum.spl
-cd ..
 cd xfs-interface/
 ./xfs-interface 
 ./xfs-interface 
@@ -497,4 +493,8 @@ cd ../xfs-interface/
 ./xfs-interface 
 cd ../xsm
 ./xsm
+exit
+cd myexpos/xsm
+./xsm
+./xsm --debug
 exit
