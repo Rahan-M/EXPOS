@@ -1,0 +1,28 @@
+[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1] * 16) + 13] = SP; // save UPTR
+SP=[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1] *16) +11] * 512 - 1; 
+// SP=KPTR
+
+backup;
+
+alias reqPID R0;
+alias process_table_entry R1;
+
+reqPID=[TERMINAL_STATUS_TABLE+1];
+process_table_entry=PROCESS_TABLE + reqPID*16;
+
+[process_table_entry+8]=P0;
+
+[TERMINAL_STATUS_TABLE+0]=0;
+alias i R4;
+i=0;
+while(i<16) do
+    if([PROCESS_TABLE + 16*i + 4]==WAIT_TERMINAL) then
+        [PROCESS_TABLE + 16*i + 4]= READY;
+    endif;
+    i=i+1;
+endwhile;
+
+restore;
+// reset SP from UPTR
+SP=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] *16 + 13];
+ireturn;

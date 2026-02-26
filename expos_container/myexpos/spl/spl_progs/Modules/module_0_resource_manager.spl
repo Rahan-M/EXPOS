@@ -15,7 +15,7 @@ if(functionNum==8) then
     endif;
     [TERMINAL_STATUS_TABLE + 0]=1;
     [TERMINAL_STATUS_TABLE + 1]=currentPID;
-    breakpoint;
+//    breakpoint;
     return;
 // Note that this code = will be executed only after the scheduler 
 // schedules the process again, which in turn occurs only after the
@@ -38,7 +38,7 @@ if(functionNum==9) then
         i=i+1;
     endwhile;
     R0=0;
-    breakpoint;
+//    breakpoint;
     return;
 endif;
 return;
