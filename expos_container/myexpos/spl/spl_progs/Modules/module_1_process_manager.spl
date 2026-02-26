@@ -1,0 +1,7 @@
+alias functionNum R1;
+alias currentPID R2;
+
+alias process_table_entry R3;
+process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+// function number = 3 for exit proces

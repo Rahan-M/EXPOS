@@ -1,0 +1,37 @@
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1]*16 + 9]=9;
+// 9 is the system call number for executed
+
+alias userSP R0;
+userSP = SP;
+
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 13]=SP;
+SP=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] * 16 + 11] * 512 - 1;
+
+// find file descriptor
+//userSP-5=sys call number userSP-4=arg1, -3=arg2, -2=arg3, -1=retval, -0=IP+2
+// translate userSP-4
+alias physicalPageNum R1;
+alias offset R2;
+alias fileNamePhysicalAddr R3;
+physicalPageNum = [PTBR + 2 * ((userSP - 4)/ 512)];
+offset = (userSP - 4) % 512;
+fileNamePhysicalAddr = (physicalPageNum * 512) + offset;
+alias filename R4;
+filename=[fileNamePhysicalAddr];
+
+// memory copy of inode table starts at page 59
+// goes on for 960 = 16 * 60 words
+alias R5 INODE_TABLE;
+INODE_TABLE = 59 * 512;
+alias R6 i;
+i=0;
+while(i<60 && ([INODE_TABLE + (i * 16) + 1]==filename)) do
+    i=i+1;
+endwhile;
+
+// NOT FOUND
+if(i==60) then
+    alias physicalAddrRetVal R7;
+    physicalAddrRetVal = ([PTBR + 2 * ((userSP - 1) / 512)] * 512) + ((userSP - 1) % 512);
+    [physicalAddrRetVal] = -1;
+endif;
