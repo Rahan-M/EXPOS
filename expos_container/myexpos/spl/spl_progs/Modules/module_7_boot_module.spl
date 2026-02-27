@@ -3,25 +3,45 @@ loadi(63, 13); // load library code from disk, loaded to disk during startup
 loadi(64, 14);// these will be logical page 0 and 1
 loadi(65, 7); // 65 and 66 stores init code
 loadi(66, 8);
-loadi(14, 27); // INT 6: Read
-loadi(15, 28);
-loadi(16,29); // INT 7 Module
-loadi(17,30);
-loadi(22, 35); // INT 10 Module
-loadi(23, 36);
 loadi(2, 15); // exception handler routine
 loadi(3, 16);
 loadi(4, 17); // timer interrupt handler
 loadi(5, 18);
 loadi(8, 21); // console interrupt handler
 loadi(9, 22);
-loadi(50, 63); // Module 5, Scheduler
-loadi(51, 64);
+loadi(14, 27); // INT 6: Read
+loadi(15, 28);
+loadi(16, 29); // INT 7 Module
+loadi(17, 30);
+loadi(20, 33); // INT 9 Module
+loadi(21, 34);
+loadi(22, 35); // INT 10 Module
+loadi(23, 36);
 loadi(40, 53); // Module 0, Resource Manager
 loadi(41, 54);
+loadi(42, 55); // Module 1, Process Manager
+loadi(43, 56);
+loadi(44, 57); // Module 2, Memory Manager
+loadi(45, 58);
 loadi(48, 61); // Module 4, Device Manager
 loadi(49, 62);
-[TERMINAL_STATUS_TABLE]=0;
+loadi(50, 63); // Module 5, Scheduler
+loadi(51, 64); 
+loadi(59, 3);  // inode user table
+loadi(60, 4);
+
+[TERMINAL_STATUS_TABLE]=0; // status = 0 for free
+
+[MEMORY_FREE_LIST + 76] = 1;
+[MEMORY_FREE_LIST + 77] = 1;
+[MEMORY_FREE_LIST + 78] = 1;
+[MEMORY_FREE_LIST + 79] = 1;
+[MEMORY_FREE_LIST + 80] = 1;
+[MEMORY_FREE_LIST + 81] = 1;
+[MEMORY_FREE_LIST + 82] = 1;
+[SYSTEM_STATUS_TABLE + 0] = 1;
+[SYSTEM_STATUS_TABLE + 2] = 45;
+[SYSTEM_STATUS_TABLE + 3] = 0;
 
 // Init programm
 PTBR=PAGE_TABLE_BASE+20;
@@ -64,8 +84,18 @@ PTLR=10;
 [PROCESS_TABLE + 16 + 15] = 10;
 [76 * 512] = [65 * 512 + 1];
 
-// Initialize STATE field of all other process table entries to TERMINATED
 alias i R6;
+i = 0;
+while (i < 128) do
+    if (i < 76) then
+        [MEMORY_FREE_LIST  + i] = 1;
+    else
+        [MEMORY_FREE_LIST + i] = 0;
+    endif;
+    i = i + 1;
+endwhile;
+
+// Initialize STATE field of all other process table entries to TERMINATED
 i=2;
 while(i<16) do
     [PROCESS_TABLE + 16*i + 4] = TERMINATED;

@@ -20,13 +20,18 @@ alias filename R4;
 filename=[fileNamePhysicalAddr];
 
 // memory copy of inode table starts at page 59
-// goes on for 960 = 16 * 60 words
-alias R5 INODE_TABLE;
-INODE_TABLE = 59 * 512;
-alias R6 i;
+// goes on for 960 words = 16 * 60 words
+// Starting stored in INODE_TABLE
+
+alias i R6;
 i=0;
-while(i<60 && ([INODE_TABLE + (i * 16) + 1]==filename)) do
-    i=i+1;
+while(i<MAX_FILE_NUM ) do
+    if (filename == [INODE_TABLE + i * 16 + 1]) then
+        if ([INODE_TABLE + i * 16] == EXEC) then
+            break;
+        endif;
+    endif;
+    i = i + 1;
 endwhile;
 
 // NOT FOUND
@@ -34,4 +39,91 @@ if(i==60) then
     alias physicalAddrRetVal R7;
     physicalAddrRetVal = ([PTBR + 2 * ((userSP - 1) / 512)] * 512) + ((userSP - 1) % 512);
     [physicalAddrRetVal] = -1;
+    SP=userSP;
+    [PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 9] = 0;
+    ireturn;
 endif;
+
+multipush(R0,R1,R2,R3,R4,R5,R6);
+R1=3; // Function number
+R2=[SYSTEM_STATUS_TABLE+1];
+
+call MOD_1;
+
+multipop(R0,R1,R2,R3,R4,R5,R6);
+
+alias UAPNO R7;
+UAPNO=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 11];
+
+[MEMORY_FREE_LIST + UAPNO] = [MEMORY_FREE_LIST + UAPNO] + 1;
+[SYSTEM_STATUS_TABLE + 2]= [SYSTEM_STATUS_TABLE + 2] -1;
+
+SP=UAPNO*512-1;
+
+// New process uses the PID of the terminated process
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 +4] = RUNNING;
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 7] =i;
+
+// Library
+[PTBR]=63;
+[PTBR+1]="0100";
+[PTBR+2]=64;
+[PTBR+3]="0100";
+
+multipush(R0, R1, R2, R3, R4, R5, R6, R7);
+
+// Heap
+R1=1;
+call MOD_2;
+[PTBR+4]=R0;
+[PTBR+5]= "0110";
+R1 = 1;
+call MOD_2;
+[PTBR + 6] = R0;
+[PTBR + 7] = "0110";
+
+// Stack
+R1 = 1;
+call MOD_2;
+[PTBR + 16] = R0;
+[PTBR + 17] = "0110";
+
+R1 = 1;
+call MOD_2;
+[PTBR + 18] = R0;
+[PTBR + 19] = "0110";
+
+multipop(R0, R1, R2, R3, R4, R5, R6, R7);
+
+alias j R8;
+alias numBlocks R9;
+numBlocks=(([INODE_TABLE + 16*i + 2]-1)/512)+1;
+j=0;
+
+multipush(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9);
+while(j<4) do
+    if(j<numBlocks) then
+        R1=1;
+        call MOD_2;
+        [PTBR + 8 + 2*j]=R0;
+        [PTBR + 9 + 2*j]="0100";
+    else
+        [PTBR + 8 + 2 * j] = -1;
+        [PTBR + 9 + 2 * j] = "0000";
+    endif;
+    j=j+1;
+endwhile;
+
+multipop(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9);
+
+j=0;
+while(j<numBlocks) do
+    loadi([PTBR + 8 + 2*j], [INODE_TABLE+ 16*i + 8 + j]);
+    j=j+1;
+endwhile;
+
+[[PTBR + 16]*512] = [[PTBR+8]*512 + 1];
+
+SP=8*512; // logical address
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 9]=0;
+ireturn;
