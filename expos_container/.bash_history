@@ -1,8 +1,3 @@
-./xsm
-exit
-ls myexpos/
-cd myexpos/
-clear
 cd spl
 ./spl $PWD/spl_progs/oddnos.spl
 ./spl $HOME/myexpos/spl/spl_progs/oddnos.spl
@@ -497,4 +492,9 @@ cd ../xsm
 ./xsm
 ./xsm
 git add .
+exit
+cd myexpos/xsm
+./xsm
+./xsm
+./xsm --debug
 exit
