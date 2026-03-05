@@ -1,0 +1,79 @@
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1]*16 + 9] =-1;
+
+alias userSP R0;
+userSP = SP;
+
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 13]=SP;
+SP=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] * 16 + 11] * 512 - 1;
+
+backup;
+multipush(EIP);
+
+if(EC!=0 || userSP== PTLR * 512 -1) then
+    if (EC == 0) then
+        print "Stack overflow";
+    endif;
+    if (EC == 1) then
+        print "Illegal instruction";
+    endif;
+    if (EC == 2) then
+        print "Illegal memory access";
+    endif;
+    if (EC == 3) then
+        print "Arithmetic Exception";
+    endif;
+
+    // no need to push anything as we never return back
+    // call exit process
+    R1=3;
+    R2=[SYSTEM_STATUS_TABLE+1];
+    call MOD_1;
+
+    call MOD_5;
+    return;
+endif;
+
+// EPN store the page number where 
+// the instruction that caused the page fault reside
+if(EPN>3 && EPN<7) then
+    // code page
+    alias nextBlock R1;
+    nextBlock=[DISK_MAP_TABLE + [SYSTEM_STATUS_TABLE+1]*10 + EPN];
+
+    multipush(R0, R1);
+    multipush(EPN);
+
+    // get code page fxn
+    R1=5;
+    R2=nextBlock;
+    call MOD_2;
+
+    multipop(EPN);
+    [PAGE_TABLE_BASE + [SYSTEM_STATUS_TABLE+1]*20 + EPN]=R0;
+    [PAGE_TABLE_BASE + [SYSTEM_STATUS_TABLE+1]*20 + EPN + 1]="1100";
+    multipush(R0, R1);
+else 
+    // Heap Page
+    multipush(R0);
+    R1 = 1;
+    call MOD_2;
+    [PTBR + 4] = R0;
+    [PTBR + 5] = "1110";
+
+    R1 = 1;
+    call MOD_2;
+    [PTBR + 6] = R0;
+    [PTBR + 7] = "1110";
+
+    multipop(R0);
+endif;
+
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1]*16 + 9] =-1;
+
+restore;
+// reset SP from UPTR
+SP=[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE+1])*16 + 13];
+SP=SP+1;
+[[PTBR + 2*(SP/512)] *512 + (SP%512)]=EIP;
+// breakpoint;
+ireturn;
