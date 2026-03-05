@@ -1,6 +1,28 @@
 alias functionNum R1;
 alias currentPID R2;
 
+if(functionNum==2) then
+    // disk load function final version
+    alias pageNo R3;
+    alias blockNo R4;
+
+    multipush(R1, R2, R3, R4);
+    R1=3;
+    call MOD_0;
+
+    multipop(R1, R2, R3, R4);
+
+    [DISK_STATUS_TABLE + 1]=0;
+    [DISK_STATUS_TABLE + 2]=pageNo;
+    [DISK_STATUS_TABLE + 3]=blockNo;
+
+    load (pageNo, blockNo);
+
+    [PROCESS_TABLE + currentPID*16 +4]=WAIT_DISK;
+    call MOD_5;
+    return;
+endif;
+
 if(functionNum==3) then
     // functionNum==3, terminal write
     // assign R2 to currentPID explicitly incase of erros

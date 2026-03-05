@@ -1,10 +1,28 @@
 alias functionNum R1;
 alias currentPID R2;
 
-alias process_table_entry R3;
-process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+if(functionNum==3) then
+    // acquire disk function final version
+    alias process_table_entry R3;
+    process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+    while([DISK_STATUS_TABLE]==1) do
+        [process_table_entry+4]=WAIT_DISK;
+        multipush(R1, R2, R3);
+        call MOD_5;
+        multipop(R1, R2, R3);
+    endwhile;
+
+    [DISK_STATUS_TABLE]=1;
+    [DISK_STATUS_TABLE+4]=currentPID;
+    return;
+endif;
 
 if(functionNum==8) then
+    alias process_table_entry R3;
+    process_table_entry = PROCESS_TABLE + currentPID * 16;
+
     if([TERMINAL_STATUS_TABLE]==1) then
         [process_table_entry + 4] = WAIT_TERMINAL;
         multipush(R1, R2, R3);
@@ -24,6 +42,9 @@ if(functionNum==8) then
 endif;
 
 if(functionNum==9) then
+    alias process_table_entry R3;
+    process_table_entry = PROCESS_TABLE + currentPID * 16;
+
     if([TERMINAL_STATUS_TABLE+1]!=currentPID) then
         R0=-1;
         return;

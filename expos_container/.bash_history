@@ -1,7 +1,3 @@
-cd spl
-./spl $PWD/spl_progs/oddnos.spl
-./spl $HOME/myexpos/spl/spl_progs/oddnos.spl
-./spl $PWD/spl_progs/oddnos.spl
 exit
 ./myexpos/xsm/xsm
 ./myexpos/xsm/xsm --debug --timer 0
@@ -497,4 +493,8 @@ cd myexpos/xsm
 ./xsm
 ./xsm
 ./xsm --debug
+exit
+cd myexpos/xsm
+./xsm
+git branch
 exit

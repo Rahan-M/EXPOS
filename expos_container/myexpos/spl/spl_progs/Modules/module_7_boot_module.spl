@@ -1,12 +1,10 @@
 // loadi(mem_page_no , disk_block_no);
-loadi(63, 13); // load library code from disk, loaded to disk during startup
-loadi(64, 14);// these will be logical page 0 and 1
-loadi(65, 7); // 65 and 66 stores init code
-loadi(66, 8);
 loadi(2, 15); // exception handler routine
 loadi(3, 16);
 loadi(4, 17); // timer interrupt handler
 loadi(5, 18);
+loadi(6, 19); // disk interrupt handler
+loadi(7, 20);
 loadi(8, 21); // console interrupt handler
 loadi(9, 22);
 loadi(14, 27); // INT 6: Read
@@ -29,8 +27,25 @@ loadi(50, 63); // Module 5, Scheduler
 loadi(51, 64); 
 loadi(59, 3);  // inode user table
 loadi(60, 4);
+loadi(63, 13); // load library code from disk, loaded to disk during startup
+loadi(64, 14);// these will be logical page 0 and 1
+loadi(65, 7); // 65 and 66 stores init code
+loadi(66, 8);
 
 [TERMINAL_STATUS_TABLE]=0; // status = 0 for free
+[DISK_STATUS_TABLE]=0;
+
+alias i R6;
+i = 0;
+while (i < 128) do
+    if (i < 76) then
+        [MEMORY_FREE_LIST  + i] = 1;
+    else
+        [MEMORY_FREE_LIST + i] = 0;
+    endif;
+    i = i + 1;
+endwhile;
+
 
 [MEMORY_FREE_LIST + 76] = 1;
 [MEMORY_FREE_LIST + 77] = 1;
@@ -84,21 +99,18 @@ PTLR=10;
 [PROCESS_TABLE + 16 + 15] = 10;
 [76 * 512] = [65 * 512 + 1];
 
-alias i R6;
-i = 0;
-while (i < 128) do
-    if (i < 76) then
-        [MEMORY_FREE_LIST  + i] = 1;
-    else
-        [MEMORY_FREE_LIST + i] = 0;
-    endif;
-    i = i + 1;
-endwhile;
-
 // Initialize STATE field of all other process table entries to TERMINATED
 i=2;
 while(i<16) do
     [PROCESS_TABLE + 16*i + 4] = TERMINATED;
+    i=i+1;
+endwhile;
+
+// Initialize per process table
+i=1;
+while(i<9) do
+    [([PROCESS_TABLE + 16 + 11] + 1) * 512 - 2 * i] = -1;
+    // [((UAPNO + 1)*512) - 2*j] = -1;  uapno=80
     i=i+1;
 endwhile;
 
