@@ -16,26 +16,23 @@ alias fileNamePhysicalAddr R3;
 physicalPageNum = [PTBR + 2 * ((userSP - 4)/ 512)];
 offset = (userSP - 4) % 512;
 fileNamePhysicalAddr = (physicalPageNum * 512) + offset;
-alias filename R4;
-filename=[fileNamePhysicalAddr];
+alias fileName R4;
+fileName=[fileNamePhysicalAddr];
 
-// memory copy of inode table starts at page 59
-// goes on for 960 words = 16 * 60 words
-// Starting stored in INODE_TABLE
-
-alias i R6;
-i=0;
-while(i<MAX_FILE_NUM ) do
-    if (filename == [INODE_TABLE + i * 16 + 1]) then
-        if ([INODE_TABLE + i * 16] == EXEC) then
+alias inodeEntry R6;
+inodeEntry=0;
+while(inodeEntry<MAX_FILE_NUM ) do
+    if (fileName == [INODE_TABLE + inodeEntry * 16 + 1]) then
+        if ([INODE_TABLE + inodeEntry * 16] == EXEC) then
             break;
         endif;
     endif;
-    i = i + 1;
+    inodeEntry = inodeEntry + 1;
 endwhile;
 
+
 // NOT FOUND
-if(i==60) then
+if(inodeEntry==60) then
     alias physicalAddrRetVal R7;
     physicalAddrRetVal = ([PTBR + 2 * ((userSP - 1) / 512)] * 512) + ((userSP - 1) % 512);
     [physicalAddrRetVal] = -1;
@@ -43,6 +40,7 @@ if(i==60) then
     [PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 9] = 0;
     ireturn;
 endif;
+
 
 multipush(R0,R1,R2,R3,R4,R5,R6);
 R1=3; // Function number for exit process
@@ -62,7 +60,7 @@ SP=UAPNO*512-1;
 
 // New process uses the PID of the terminated process
 [PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 4] = RUNNING;
-[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 7] = i;
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 7] = inodeEntry;
 
 // Library
 [PTBR]=63;
@@ -91,53 +89,52 @@ call MOD_2;
 
 multipop(R0, R1, R2, R3, R4, R5, R6, R7);
 
-
 // Invalidate code pages 2, 3 and 4
-alias j R8;
-j=1;
-while(j<4) do
-    [PTBR + 8 + 2 * j] = -1;
-    [PTBR + 9 + 2 * j] = "0000";
-    j=j+1;
+alias i R8;
+i = 1;
+while (i < 4) do
+    [PTBR + 8 + 2 * i] = -1;
+    [PTBR + 9 + 2 * i] = "0000";
+    i = i + 1;
 endwhile;
 
 // DISK_MAP_TABLE
 alias numBlocks R9;
 alias currentPID R10;
-numBlocks=(([INODE_TABLE + 16*i + 2]-1)/512)+1;
+numBlocks=(([INODE_TABLE + 16* inodeEntry + 2]-1)/512)+1;
 currentPID=[SYSTEM_STATUS_TABLE+1];
 
-j=2;
-
-
-while(j<10) do
-    if(j==2 || j==3) then
-        [DISK_MAP_TABLE+10*currentPID+j]=-1;
+i=2;
+while(i<10) do
+    if(i==2 || i==3) then
+        [DISK_MAP_TABLE+10*currentPID+i]=-1;
     endif;
-    if(j==8 || j==9) then
-        [DISK_MAP_TABLE+10*currentPID+j]=-1;
+    if(i==8 || i==9) then
+        [DISK_MAP_TABLE+10*currentPID+i]=-1;
     endif;
-    if(j>3 && j<8) then
-        [DISK_MAP_TABLE + (10* currentPID) + j]=[INODE_TABLE + 16*i + j + 4];
+    if(i>3 && i<8) then
+        [DISK_MAP_TABLE + (10* currentPID) + i]=[INODE_TABLE + 16*inodeEntry + i + 4];
     endif;
-    j=j+1;
+    i=i+1;
 endwhile;
 
+
 multipush(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10);
-// Initialize code page 1 using get code page fxn
-R1=5;
-call MOD_2;
+
+R1 = 5;
+R2 = [INODE_TABLE + inodeEntry * 16 + 8];
+call MOD_2; // I forgot this earlier
 [PTBR + 8] = R0;
 [PTBR + 9] = "0100";
+
 multipop(R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10);
 
-
 // Initialization of per process table
-j=1;
-while(j<9) do
-    [([PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 11] + 1) *512 - (2*j)] = -1;
-    j=j+1;
-    // [((UAPNO + 1)*512) - 2*j] = -1;
+i=1;
+while(i<9) do
+    [([PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 11] + 1) *512 - (2*i)] = -1;
+    i=i+1;
+    // [((UAPNO + 1)*512) - 2*i] = -1;
     // Last 16 words of the UAPNO is reserved for this
 endwhile;
 

@@ -68,7 +68,7 @@ if(functionNum==5) then
         j=4;
         while(j<8) do
             if([DISK_MAP_TABLE + 10*i + j]==blockNo) then
-                pageNo = [PTBR + 20*i + 2*j];
+                pageNo = [PAGE_TABLE_BASE + 20*i + 2*j];
                 if (pageNo != -1) then
                     [MEMORY_FREE_LIST + pageNo] = [MEMORY_FREE_LIST + pageNo] + 1;
                     R0 = pageNo;
