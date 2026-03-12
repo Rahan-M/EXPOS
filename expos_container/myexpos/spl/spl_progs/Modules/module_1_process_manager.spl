@@ -1,10 +1,32 @@
 alias functionNum R1;
+
+// get pcb entry
+if (functionNum == 1) then
+    alias i R3;
+    i = 1;
+    while (i < 16) do
+        if ([PROCESS_TABLE + i * 16 + 4] == TERMINATED) then
+            break;
+        endif;
+        i = i + 1;
+    endwhile;
+    if (i == 16) then
+        R0 = -1;
+    else
+        [PROCESS_TABLE + i * 16 + 4] = ALLOCATED;
+        [PROCESS_TABLE + i * 16 + 1] = i;
+        [PROCESS_TABLE + i * 16 + 14] = PAGE_TABLE_BASE + (20 * i);
+        [PROCESS_TABLE + i * 16 + 15] = 10;
+        R0 = i;
+    endif;
+    return;
+endif;
+
 alias currentPID R2;
 
 alias process_table_entry R3;
 process_table_entry = PROCESS_TABLE + currentPID * 16;
 
-// function number = 3 for exit proces
 if(functionNum==2) then
     // free user area page
     alias UAPNO R4;
@@ -20,6 +42,7 @@ if(functionNum==2) then
     return;
 endif;
 
+// function number = 3 for exit proces
 if(functionNum==3) then
     // Exit Process
     multipush(R0, R1, R2, R3);

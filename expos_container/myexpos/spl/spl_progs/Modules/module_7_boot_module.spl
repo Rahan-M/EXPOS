@@ -11,6 +11,8 @@ loadi(14, 27); // INT 6: Read
 loadi(15, 28);
 loadi(16, 29); // INT 7 Module
 loadi(17, 30);
+loadi(18, 31); // INT 8 Module
+loadi(19, 32);
 loadi(20, 33); // INT 9 Module
 loadi(21, 34);
 loadi(22, 35); // INT 10 Module

@@ -1,21 +1,10 @@
-alias currentPID R0;
-currentPID = [SYSTEM_STATUS_TABLE+1];
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1]*16 + 9] = 8;
 
-alias process_table_entry R1;
-process_table_entry = PROCESS_TABLE + currentPID * 16;
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 13]=SP;
+SP=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] * 16 + 11] * 512 - 1;
 
-[process_table_entry + 4] = TERMINATED;
-alias i R2;
-i=1;
-// break when proces status !=TERMINATED
-while((i<16) && ([PROCESS_TABLE + 16*i + 4] == TERMINATED))do
-    i=i+1;
-endwhile;
-if(i>=16) then
-    halt;
-endif;
+R1=3;
+R2=[SYSTEM_STATUS_TABLE+1];
+call MOD_2;
 
 call MOD_5; 
-// The return within context switch module will take it back to 
-// the address store on top of the kernel stack of new process
-// the new process will never be this so it never gets executed again
