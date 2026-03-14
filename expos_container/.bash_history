@@ -1,14 +1,3 @@
-./expl ./samples/list.expl 
-./expl ./samples/list.expl 
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-./xsm
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
 cd ../spl
 ./spl ./spl_progs/Modules/module_7_boot_module.spl
 ./spl ./spl_progs/Modules/module_1_process_manager.spl
@@ -497,4 +486,15 @@ cd ../xfs-interface/
 cd ../xsm
 ./xsm
 git exit
+exit
+cd myexpos/xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Interrupts/int10.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
 exit

@@ -1,12 +1,11 @@
 int main()
 {
 decl
-    int temp, pid, a;
+    int temp, pid;
     string input;
 enddecl
 begin
-    a=1;
-    while(a == 1) do
+    while(1 == 1) do
         temp = exposcall("Write",-2,"---Enter---");
         temp = exposcall("Read",-1, input);
         if(input != "Shutdown") then
