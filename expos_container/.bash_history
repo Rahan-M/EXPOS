@@ -1,15 +1,3 @@
-cd ../spl
-./spl ./spl_progs/Modules/module_7_boot_module.spl
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-./spl ./spl_progs/interrupts/int9.spl
-./spl ./spl_progs/interrupts/exception_handler.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-./xsm
-cd ../spl
 ./spl ./spl_progs/Modules/module_7_boot_module.spl
 cd ../xfs-interface/
 ./xfs-interface 
@@ -494,6 +482,18 @@ cd ../xsm
 cd ../spl
 ./spl ./spl_progs/Interrupts/int10.spl
 cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
+cd myexpos/spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+exit
+cd myexpos/
+cd xfs-interface/
 ./xfs-interface 
 cd ../xsm
 ./xsm
