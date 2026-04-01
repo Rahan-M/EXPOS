@@ -19,6 +19,10 @@ loadi(22, 35); // INT 10 Module
 loadi(23, 36);
 loadi(24, 37); // INT 11 Module
 loadi(25, 38);
+loadi(28, 41); // INT 13 Module
+loadi(29, 42);
+loadi(30, 43); // INT 14 Module
+loadi(31, 44);
 loadi(32, 45); // INT 15 Module
 loadi(33, 46);
 loadi(40, 53); // Module 0, Resource Manager
@@ -130,6 +134,14 @@ i=1;
 while(i<9) do
     [([PROCESS_TABLE + 16 + 11] + 1) * 512 - 2 * i] = -1;
     // [((UAPNO + 1)*512) - 2*j] = -1;  uapno=80
+    i=i+1;
+endwhile;
+
+// initialize the semaphore table
+i=0;
+while(i<32) do
+    [SEMAPHORE_TABLE + 4*i]=-1;
+    [SEMAPHORE_TABLE + 4*i + 1]=0;
     i=i+1;
 endwhile;
 
