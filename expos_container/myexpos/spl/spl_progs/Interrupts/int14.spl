@@ -13,52 +13,37 @@ currPID=[SYSTEM_STATUS_TABLE+1];
 alias ptab R3;
 ptab= PROCESS_TABLE + currPID*16;
 
-
-[ptab + 9] = sysCallNumber;
-if(sysCallNumber==19) then
-    // semlock
-    alias semID R4;
-    alias pprTab R5;
-    semID = [[PTBR + 2 * ((userSP - 4) / 512)] * 512 + ((userSP - 4) % 512)];
-    pprTab = ([ptab + 11] + 1)*512 - 16; 
-    if(semID<0 || semID>7 || [pprTab + 2*semID]!=1) then
-        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
-        SP = userSP;
-        [ptab + 9] = 0;
-        ireturn;
-    endif;
-
-    alias i R6;
-    i=[pprTab+ 2*semID + 1];
-
-    while([SEMAPHORE_TABLE + 4*i]!=-1 && [SEMAPHORE_TABLE + 4*i]!=currPID) do
-        [ptab + 4]=WAIT_SEMAPHORE;
-        [ptab + 5]=i;
-        multipush(R0, R1, R2, R3, R4, R5, R6);
-        call MOD_5;
-        multipop(R0, R1, R2, R3, R4, R5, R6);
-    endwhile;
-
-    [SEMAPHORE + 4*i]=currPID;
-    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=0;
+alias semID R4;
+alias pprTab R5;
+semID = [[PTBR + 2 * ((userSP - 4) / 512)] * 512 + ((userSP - 4) % 512)];
+pprTab = ([ptab + 11] + 1)*512 - 16; 
+if(semID<0 || semID>7 || [pprTab + 2*semID]!=1) then
+    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
     SP = userSP;
     [ptab + 9] = 0;
     ireturn;
 endif;
 
+
+[ptab + 9] = sysCallNumber;
+if(sysCallNumber==19) then
+    // semlock
+    alias i R6;
+    i=[pprTab+ 2*semID + 1]; // index in semaphore table
+
+    while([SEMAPHORE_TABLE + 4*i]!=-1 && [SEMAPHORE_TABLE + 4*i]!=currPID) do
+        [ptab + 4]=WAIT_SEMAPHORE;
+        [ptab + 5]=semID;
+        multipush(R0, R1, R2, R3, R4, R5, R6);
+        call MOD_5;
+        multipop(R0, R1, R2, R3, R4, R5, R6);
+    endwhile;
+
+    [SEMAPHORE_TABLE + 4*i]=currPID;
+endif;
+
 if(sysCallNumber==20) then
     // semunlock
-    alias semID R4;
-    alias pprTab R5;
-    semID = [[PTBR + 2 * ((userSP - 4) / 512)] * 512 + ((userSP - 4) % 512)];
-    pprTab = ([ptab + 11] + 1)*512 - 16; 
-    if(semID<0 || semID>7 || [pprTab + 2*semID]!=1) then
-        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
-        SP = userSP;
-        [ptab + 9] = 0;
-        ireturn;
-    endif;
-
     alias semInd R6;
     semInd=[pprTab + 2*semID +1];
 
@@ -73,20 +58,16 @@ if(sysCallNumber==20) then
         alias i R7;
         i=1;
         while(i<16) do
-            if([PROCESS_TABLE+ 16*i + 4]==WAIT_SEMAPHORE && [PROCESS_TABLE+ 16*i + 5]==currPID) then
+            if([PROCESS_TABLE+ 16*i + 4]==WAIT_SEMAPHORE && [PROCESS_TABLE+ 16*i + 5]==semID) then
                 [PROCESS_TABLE+16*i+4]=READY;
                 [PROCESS_TABLE+16*i+5]=-1;
             endif;
             i=i+1;
-        endhwile;
+        endwhile;
     endif;
-    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=0;
-    SP = userSP;
-    [ptab + 9] = 0;
-    ireturn;
 endif;
 
-
-SP = userSP;
+[[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=0;
 [ptab + 9] = 0;
+SP = userSP;
 ireturn;

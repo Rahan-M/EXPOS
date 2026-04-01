@@ -1,0 +1,605 @@
+// Semget (17) and Semrelease (18)
+alias userSP R0;
+userSP = SP;
+
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 13] = SP;
+SP = [PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 11] * 512 - 1;
+
+alias sysCallNumber R1;
+sysCallNumber = [[PTBR + 2 * ((userSP - 5) / 512)] * 512 + ((userSP - 5) % 512)];
+
+alias currPID R2;
+currPID=[SYSTEM_STATUS_TABLE+1];
+alias ptab R3;
+ptab= PROCESS_TABLE + currPID*16;
+
+
+[ptab + 9] = sysCallNumber;
+if(sysCallNumber==17) then
+    // Semget
+    alias i R4;
+    alias pprTab R5;
+    i=0;
+    pprTab = [ptab + 11] *512 + RESOURCE_TABLE_OFFSET;  // 496 = 512 - 16
+    while(i<16) do
+        if([pprTab + 2*i]==-1) then
+            break;
+        endif;
+        i=i+1;
+    endwhile;
+
+    if(i==16) then
+        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
+        SP = userSP;
+        [ptab + 9] = 0;
+        ireturn;
+    endif;
+
+    pprTab = pprTab+2*i;
+    [pprTab]=SEMAPHORE;
+
+    multipush(R0, R1, R2, R3, R4, R5);
+    R1=6;
+    R2=currPID;
+    call MOD_0;
+    alias j R6;
+    j=R0;
+    multipop(R0, R1, R2, R3, R4, R5);
+
+    if(j==-1) then
+        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-2;
+        SP = userSP;
+        [ptab + 9] = 0;
+        ireturn;
+    endif;
+
+    [pprTab+1]=j;
+    
+    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=i;
+    SP = userSP;
+    [ptab + 9] = 0;
+    ireturn;
+endif
+
+if(sysCallNumber==18) then
+    // Semrelease
+    alias semID R4;
+    semID = [[PTBR + 2 * ((userSP - 4) / 512)] * 512 + ((userSP - 4) % 512)];
+    alias pprTab R5;
+    pprTab = ([ptab + 11] + 1)*512 - 16 + 2*semID;
+
+    if(semID<0 || semID>7 || [pprTab + 1]!=1) then
+        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
+        SP = userSP;
+        [ptab + 9] = 0;
+        ireturn;
+    endif;
+
+    
+    multipush(R0, R1, R2, R3, R4);
+        R1=7;
+        R3=currPID;
+        R2=[pprTab+1];
+        call MOD_0;
+    multipop(R0, R1, R2, R3, R4);
+
+    [pprTab]=-1; 
+    [pprTab+1]=-1;
+
+    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=0;
+    SP = userSP;
+    [ptab + 9] = 0;
+    ireturn;
+endif;
+
+SP = userSP;
+[ptab + 9] = 0;
+ireturn;
+
+
+
+
+
+
+
+// Semlock (19) and SemUnLock (20)
+alias userSP R0;
+userSP = SP;
+
+[PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 13] = SP;
+SP = [PROCESS_TABLE + [SYSTEM_STATUS_TABLE + 1] * 16 + 11] * 512 - 1;
+
+alias sysCallNumber R1;
+sysCallNumber = [[PTBR + 2 * ((userSP - 5) / 512)] * 512 + ((userSP - 5) % 512)];
+
+alias currPID R2;
+currPID=[SYSTEM_STATUS_TABLE+1];
+alias ptab R3;
+ptab= PROCESS_TABLE + currPID*16;
+
+
+[ptab + 9] = sysCallNumber;
+if(sysCallNumber==19) then
+    // semlock
+    alias semID R4;
+    alias pprTab R5;
+    semID = [[PTBR + 2 * ((userSP - 4) / 512)] * 512 + ((userSP - 4) % 512)];
+    pprTab = ([ptab + 11] + 1)*512 - 16; 
+    if(semID<0 || semID>7 || [pprTab + 2*semID]!=1) then
+        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
+        SP = userSP;
+        [ptab + 9] = 0;
+        ireturn;
+    endif;
+
+    alias i R6;
+    i=[pprTab+ 2*semID + 1];
+
+    while([SEMAPHORE_TABLE + 4*i]!=-1 && [SEMAPHORE_TABLE + 4*i]!=currPID) do
+        [ptab + 4]=WAIT_SEMAPHORE;
+        [ptab + 5]=i;
+        multipush(R0, R1, R2, R3, R4, R5, R6);
+        call MOD_5;
+        multipop(R0, R1, R2, R3, R4, R5, R6);
+    endwhile;
+
+    [SEMAPHORE + 4*i]=currPID;
+    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=0;
+    SP = userSP;
+    [ptab + 9] = 0;
+    ireturn;
+endif;
+
+if(sysCallNumber==20) then
+    // semunlock
+    alias semID R4;
+    alias pprTab R5;
+    semID = [[PTBR + 2 * ((userSP - 4) / 512)] * 512 + ((userSP - 4) % 512)];
+    pprTab = ([ptab + 11] + 1)*512 - 16; 
+    if(semID<0 || semID>7 || [pprTab + 2*semID]!=1) then
+        [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-1;
+        SP = userSP;
+        [ptab + 9] = 0;
+        ireturn;
+    endif;
+
+    alias semInd R6;
+    semInd=[pprTab + 2*semID +1];
+
+    if([SEMAPHORE_TABLE + 4*semInd]!=-1) then
+        if([SEMAPHORE_TABLE + 4*semInd]!=currPID) then
+            [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=-2;
+            SP = userSP;
+            [ptab + 9] = 0;
+            ireturn;
+        endif;
+        [SEMAPHORE_TABLE + 4*semInd]=-1;
+        alias i R7;
+        i=1;
+        while(i<16) do
+            if([PROCESS_TABLE+ 16*i + 4]==WAIT_SEMAPHORE && [PROCESS_TABLE+ 16*i + 5]==currPID) then
+                [PROCESS_TABLE+16*i+4]=READY;
+                [PROCESS_TABLE+16*i+5]=-1;
+            endif;
+            i=i+1;
+        endhwile;
+    endif;
+    [[PTBR + 2*((userSP-1)/512)] * 512 + ((userSP-1) % 512)]=0;
+    SP = userSP;
+    [ptab + 9] = 0;
+    ireturn;
+endif;
+
+
+SP = userSP;
+[ptab + 9] = 0;
+ireturn;
+
+
+
+
+
+
+
+alias functionNum R1;
+
+
+if(functionNum==3) then
+    alias currentPID R2;
+    // acquire disk function final version
+    alias process_table_entry R3;
+    process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+    while([DISK_STATUS_TABLE]==1) do
+        [process_table_entry+4]=WAIT_DISK;
+        multipush(R1, R2, R3);
+        call MOD_5;
+        multipop(R1, R2, R3);
+    endwhile;
+
+    [DISK_STATUS_TABLE]=1;
+    [DISK_STATUS_TABLE+4]=currentPID;
+    return;
+endif;
+
+if(functionNum==6) then
+    alias currentPID R2;
+    alias i R3;
+    i=0;
+    while(i<32) do
+        if([SEMAPHORE_TABLE + 4*i + 1]==0) then
+            break;
+        endif;
+        i=i+1;
+    endwhile;
+
+    if(i==32) then
+        R0=-1;
+        return;
+    endif;
+
+    [SEMAPHORE_TABLE + 4*i]=-1;
+    [SEMAPHORE_TABLE + 4*i + 1]=1;
+
+    R0=i;
+    return;
+endif;
+
+if(functionNum==7) then
+    alias semID R2;
+    alias pid R3;
+
+    if([SEMAPHORE_TABLE+4*semID] == pid)then
+        [SEMAPHORE_TABLE + 4*semID]=-1;
+        alias i R4;
+        i=0;
+        while(i<16) do
+            if([PROCESS_TABLE + 16*i +4] == WAIT_SEMAPHORE && [PROCESS_TABLE+16*i+5]==semID) then
+                [PROCESS_TABLE+ 16*i+4]=READY;
+                [PROCESS_TABLE+ 16*i+5]=-1;
+            endif;
+            i=i+1;
+        endwhile;
+    endif;
+    [SEMAPHORE_TABLE + 4*semID + 1]=[SEMAPHORE_TABLE + 4*semID + 1]-1;
+    R0=0;
+    return;
+endif;
+
+if(functionNum==8) then
+    alias currentPID R2;
+    alias process_table_entry R3;
+    process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+    if([TERMINAL_STATUS_TABLE]==1) then
+        [process_table_entry + 4] = WAIT_TERMINAL;
+        multipush(R1, R2, R3);
+
+        call MOD_5;
+
+        multipop(R1, R2, R3);
+    endif;
+    [TERMINAL_STATUS_TABLE + 0]=1;
+    [TERMINAL_STATUS_TABLE + 1]=currentPID;
+//    breakpoint;
+    return;
+// Note that this code = will be executed only after the scheduler 
+// schedules the process again, which in turn occurs only after the
+// terminal was released by the holding process by invoking the release
+// terminal function.
+endif;
+
+if(functionNum==9) then
+    alias currentPID R2;
+    alias process_table_entry R3;
+    process_table_entry = PROCESS_TABLE + currentPID * 16;
+
+    if([TERMINAL_STATUS_TABLE+1]!=currentPID) then
+        R0=-1;
+        return;
+    endif;
+    [TERMINAL_STATUS_TABLE+0]=0;
+    alias i R4;
+    i=0;
+    while(i<16) do
+        if([PROCESS_TABLE + 16*i + 4]==WAIT_TERMINAL) then
+            [PROCESS_TABLE + 16*i + 4]= READY;
+        endif;
+        i=i+1;
+    endwhile;
+    R0=0;
+//    breakpoint;
+    return;
+endif;
+return;
+
+alias functionNum R1;
+alias currentPID R2;
+
+// get pcb entry
+if (functionNum == 1) then
+    alias i R3;
+    i = 1;
+    while (i < 16) do
+        if ([PROCESS_TABLE + i * 16 + 4] == TERMINATED) then
+            break;
+        endif;
+        i = i + 1;
+    endwhile;
+    if (i == 16) then
+        R0 = -1;
+    else
+        [PROCESS_TABLE + i * 16 + 4] = ALLOCATED;
+        [PROCESS_TABLE + i * 16 + 1] = i;
+        [PROCESS_TABLE + i * 16 + 14] = PAGE_TABLE_BASE + (20 * i);
+        [PROCESS_TABLE + i * 16 + 15] = 10;
+        R0 = i;
+    endif;
+    return;
+endif;
+
+// free user areaPage
+if (functionNum == 2) then
+    alias userAreaPageNumber R3;
+    userAreaPageNumber = [PROCESS_TABLE + 16 * currentPID + 11];
+
+    alias pTab R4;
+    pTab=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] * 16];
+    alias pprTab R5;
+    pprTab=[ptab + 11] * 512 + RESOURCE_TABLE_OFFSET;
+
+    alias i R6;
+    i=0;
+    while(i<8) do
+        if([pprTab + 2*i]==1)then
+            multipush(R0, R1, R2, R3, R4, R5, R6);
+            R1=7;
+            R3=currentPID;
+            R2=[pprTab + 2*i +1];
+            call MOD_0;
+            multipop(R0, R1, R2, R3, R4, R5, R6);
+        endif;
+        i=i+1;
+    endwhile;
+
+    multipush(R0, R1, R2, R3, R4, R5, R6);
+    R1 = 2;
+    R2 = userAreaPageNumber;
+    call MOD_2;
+    multipop(R0, R1, R2, R3, R4, R5, R6);
+    return;
+endif;
+
+// exit process
+if (functionNum == 3) then
+    multipush(R1, R2);
+
+    // to free page table
+    R1 = 4;
+    R2 = currentPID;
+    call MOD_1;
+
+    // to free user area page
+    R1 = 2;
+    R2 = currentPID;
+    call MOD_1;
+
+    multipop(R1, R2);
+
+    if ([PROCESS_TABLE + currentPID * 16 + 9] != 9) then // not invoked from exec
+        alias i R3;
+        i = 0;
+        while (i < 16) do
+            if ([PROCESS_TABLE + i * 16 + 4] == WAIT_PROCESS && [PROCESS_TABLE + i * 16 + 5] == currentPID) then
+                [PROCESS_TABLE + i * 16 + 4] = READY;
+            endif;
+            if ([PROCESS_TABLE + i * 16 + 2] == currentPID) then
+                [PROCESS_TABLE + i * 16 + 2] = -1;
+            endif;
+            i = i + 1;
+        endwhile;
+    endif;
+
+    [PROCESS_TABLE + 16 * currentPID + 4] = TERMINATED;
+    return;
+endif;
+
+// free page table
+if (functionNum == 4) then
+    [PTBR + 0] = -1;
+    [PTBR + 1] = "0000";
+    [PTBR + 2] = -1;
+    [PTBR + 3] = "0000";
+
+    alias i R3;
+    alias pageNumber R4;
+
+    i = 1;
+    while (i < (PTLR - 1)) do
+        pageNumber = [PTBR + 2 + 2 * i];
+        if (pageNumber != -1) then
+            multipush(R1, R2, R3, R4);
+
+            // to release page
+            R1 = 2;
+            R2 = pageNumber;
+            call MOD_2;
+
+            multipop(R1, R2, R3, R4);
+
+            [PTBR + 2 + 2 * i] = -1;
+            [PTBR + 3 + 2 * i] = "0000";
+        endif;
+        i = i + 1;
+    endwhile;
+
+    i = 2;
+    while (i < 10) do
+        if ([DISK_MAP_TABLE + currentPID * 10 + i] != -1) then
+            if (i < 4 || i > 7) then
+                multipush(R1, R2, R3, R4);
+
+                R1 = 4;
+                R3 = currentPID;
+                R2 = [DISK_MAP_TABLE + currentPID * 10 + i];
+
+                call MOD_2;
+
+                multipop(R1, R2, R3, R4);
+            endif;
+            [DISK_MAP_TABLE + currentPID * 10 + i] = -1;
+        endif;
+        i = i + 1;
+    endwhile;
+    return;
+endif;
+
+
+// loadi(mem_page_no , disk_block_no);
+loadi(2, 15); // exception handler routine
+loadi(3, 16);
+loadi(4, 17); // timer interrupt handler
+loadi(5, 18);
+loadi(6, 19); // disk interrupt handler
+loadi(7, 20);
+loadi(8, 21); // console interrupt handler
+loadi(9, 22);
+loadi(14, 27); // INT 6: Read
+loadi(15, 28);
+loadi(16, 29); // INT 7 Module
+loadi(17, 30);
+loadi(18, 31); // INT 8 Module
+loadi(19, 32);
+loadi(20, 33); // INT 9 Module
+loadi(21, 34);
+loadi(22, 35); // INT 10 Module
+loadi(23, 36);
+loadi(24, 37); // INT 11 Module
+loadi(25, 38);
+loadi(28, 41); // INT 13 Module
+loadi(29, 42);
+loadi(30, 43); // INT 14 Module
+loadi(31, 44);
+loadi(32, 45); // INT 15 Module
+loadi(33, 46);
+loadi(40, 53); // Module 0, Resource Manager
+loadi(41, 54);
+loadi(42, 55); // Module 1, Process Manager
+loadi(43, 56);
+loadi(44, 57); // Module 2, Memory Manager
+loadi(45, 58);
+loadi(48, 61); // Module 4, Device Manager
+loadi(49, 62);
+loadi(50, 63); // Module 5, Scheduler
+loadi(51, 64); 
+loadi(59, 3);  // inode user table
+loadi(60, 4);
+loadi(61, 2);
+loadi(63, 13); // library 
+loadi(64, 14); // these will be logical page 0 and 1
+loadi(65, 7); //  init code
+loadi(66, 8);
+
+[TERMINAL_STATUS_TABLE]=0; // status = 0 for free
+[DISK_STATUS_TABLE]=0;
+
+alias i R6;
+i = 0;
+while (i < 128) do
+    if (i < 76) then
+        [MEMORY_FREE_LIST  + i] = 1;
+    else
+        [MEMORY_FREE_LIST + i] = 0;
+    endif;
+    i = i + 1;
+endwhile;
+
+
+[MEMORY_FREE_LIST + 76] = 1;
+[MEMORY_FREE_LIST + 77] = 1;
+[MEMORY_FREE_LIST + 78] = 1;
+[MEMORY_FREE_LIST + 79] = 1;
+[MEMORY_FREE_LIST + 80] = 1;
+[MEMORY_FREE_LIST + 81] = 1;
+[MEMORY_FREE_LIST + 82] = 1;
+[SYSTEM_STATUS_TABLE + 0] = 1;
+[SYSTEM_STATUS_TABLE + 2] = 45;
+[SYSTEM_STATUS_TABLE + 3] = 0;
+
+// Init programm
+PTBR=PAGE_TABLE_BASE+20;
+PTLR=10;
+
+//Library page 0 and 1
+[PTBR+0] = 63;
+[PTBR+1] = "0100";
+[PTBR+2] = 64;
+[PTBR+3] = "0100";
+
+//Heap page 2 and 3
+[PTBR+4] = 78;
+[PTBR+5] = "0110";
+[PTBR+6] = 79;
+[PTBR+7] = "0110";
+
+//Code page 4, 5, 6, 7
+[PTBR+8] = 65;
+[PTBR+9] = "0100";
+[PTBR+10] = 66;
+[PTBR+11] = "0100";
+[PTBR+12] = -1;
+[PTBR+13] = "0000";
+[PTBR+14] = -1;
+[PTBR+15] = "0000";
+
+//Stack page 8, 9
+[PTBR+16] = 76;
+[PTBR+17] = "0110";
+[PTBR+18] = 77;
+[PTBR+19] = "0110";
+
+// disk table initialization for init
+[DISK_MAP_TABLE + 10 + 2] = -1;
+[DISK_MAP_TABLE + 10 + 3] = -1;
+[DISK_MAP_TABLE + 10 + 4] = 7;
+[DISK_MAP_TABLE + 10 + 5] = 8;
+[DISK_MAP_TABLE + 10 + 6] = -1;
+[DISK_MAP_TABLE + 10 + 7] = -1;
+[DISK_MAP_TABLE + 10 + 8] = -1;
+[DISK_MAP_TABLE + 10 + 9] = -1;
+
+
+[PROCESS_TABLE + 16 + 1] = 1;
+[PROCESS_TABLE + 16 + 4] = CREATED;
+[PROCESS_TABLE + 16 + 11] = 80;
+[PROCESS_TABLE + 16 + 12] = 0;
+[PROCESS_TABLE + 16 + 13] = 8 * 512;
+[PROCESS_TABLE + 16 + 14] = PAGE_TABLE_BASE + 20;
+[PROCESS_TABLE + 16 + 15] = 10;
+[76 * 512] = [65 * 512 + 1];
+
+
+// Initialize STATE field of all other process table entries to TERMINATED
+i=2;
+while(i<16) do
+    [PROCESS_TABLE + 16*i + 4] = TERMINATED;
+    i=i+1;
+endwhile;
+
+// Initialize per process table
+i=1;
+while(i<9) do
+    [([PROCESS_TABLE + 16 + 11] + 1) * 512 - 2 * i] = -1;
+    // [((UAPNO + 1)*512) - 2*j] = -1;  uapno=80
+    i=i+1;
+endwhile;
+
+// initialize the semaphore table
+i=0;
+while(i<32) do
+    [SEMAPHORE_TABLE + 4*i]=-1;
+    [SEMAPHORE_TABLE + 4*i + 1]=0;
+    i=i+1;
+endwhile;
+
+return;

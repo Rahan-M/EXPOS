@@ -28,8 +28,8 @@ if (functionNum == 2) then
     alias userAreaPageNumber R3;
     userAreaPageNumber = [PROCESS_TABLE + 16 * currentPID + 11];
 
-    alias pTab R4;
-    pTab=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] * 16];
+    alias ptab R4;
+    ptab=[PROCESS_TABLE + [SYSTEM_STATUS_TABLE+1] * 16];
     alias pprTab R5;
     pprTab=[ptab + 11] * 512 + RESOURCE_TABLE_OFFSET;
 

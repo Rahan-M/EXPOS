@@ -59,7 +59,7 @@ if(sysCallNumber==17) then
     SP = userSP;
     [ptab + 9] = 0;
     ireturn;
-endif
+endif;
 
 if(sysCallNumber==18) then
     // Semrelease

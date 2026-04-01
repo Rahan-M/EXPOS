@@ -99,7 +99,7 @@ while(i<=8) do
     if([(newUAP+1) * 512 - 2*i]==1)then
         alias semInd R10;
         semInd=[[(oldUAP + 1)*512 - 2*i + 1]];
-        [SEMAPHORE_TABLE 4*semInd + 1]=[SEMAPHORE_TABLE + 4*semInd + 1] +1;
+        [SEMAPHORE_TABLE + 4*semInd + 1]=[SEMAPHORE_TABLE + 4*semInd + 1] +1;
     endif;
     [(newUAP + 1)*512 - 2*i + 1]=[(oldUAP + 1)*512 - 2*i + 1];
 
