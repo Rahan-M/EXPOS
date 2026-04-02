@@ -7,6 +7,8 @@ loadi(6, 19); // disk interrupt handler
 loadi(7, 20);
 loadi(8, 21); // console interrupt handler
 loadi(9, 22);
+loadi(10, 23); // INT 4 Module
+loadi(11, 24);
 loadi(14, 27); // INT 6: Read
 loadi(15, 28);
 loadi(16, 29); // INT 7 Module
@@ -37,9 +39,10 @@ loadi(50, 63); // Module 5, Scheduler
 loadi(51, 64); 
 loadi(59, 3);  // inode user table
 loadi(60, 4);
-loadi(61, 2);
-loadi(63, 13); // library 
-loadi(64, 14); // these will be logical page 0 and 1
+loadi(61, 2); // Disk Free List
+loadi(62, 5); // root file
+loadi(63, 13); // library (Logical page 0)
+loadi(64, 14);
 loadi(65, 7); //  init code
 loadi(66, 8);
 
@@ -113,6 +116,7 @@ PTLR=10;
 
 
 [PROCESS_TABLE + 16 + 1] = 1;
+[PROCESS_TABLE + 16 + 3] = 1; // user id
 [PROCESS_TABLE + 16 + 4] = CREATED;
 [PROCESS_TABLE + 16 + 11] = 80;
 [PROCESS_TABLE + 16 + 12] = 0;
@@ -143,6 +147,23 @@ while(i<32) do
     [SEMAPHORE_TABLE + 4*i]=-1;
     [SEMAPHORE_TABLE + 4*i + 1]=0;
     i=i+1;
+endwhile;
+
+// initialization of file status table
+i = 0;
+while (i < MAX_FILE_NUM) do
+    [FILE_STATUS_TABLE + i * 4 + 0] = -1;
+    [FILE_STATUS_TABLE + i * 4 + 1] = -1;
+    i = i + 1;
+endwhile;
+
+// initialization of buffer table
+i = 0;
+while (i < MAX_BUFFER) do
+    [BUFFER_TABLE + i * 4 + 0] = -1;
+    [BUFFER_TABLE + i * 4 + 1] = 0;
+    [BUFFER_TABLE + i * 4 + 2] = -1;
+    i = i + 1;
 endwhile;
 
 return;

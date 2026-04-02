@@ -3,35 +3,6 @@ cd ../xsm
 ./xsm
 cd ../spl
 ./spl ./spl_progs/interrupts/int9.spl
-./spl ./spl_progs/interrupts/int9.spl
-./spl ./spl_progs/interrupts/int9.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/interrupts/int9.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/interrupts/int9.spl
-./spl ./spl_progs/interrupts/int9.spl
-./spl ./spl_progs/interrupts/int9.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/interrupts/int9.spl
-./spl ./spl_progs/interrupts/int9.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/interrupts/int9.spl
 cd ../xfs-interface/
 ./xfs-interface 
 cd ../xsm
@@ -497,4 +468,33 @@ cd ../xsm
 ./xsm
 ./xsm
 cd ../xfs-interface/
+exit
+cd myexpos/spl/
+./spl ./spl_progs/Modules/module_0_resource_manager.spl
+./spl ./spl_progs/Modules/module_4_device_manager.spl
+./spl ./spl_progs/Modules/module_7_boot_module.spl
+./spl ./spl_progs/Interrupts/int4.spl 
+./spl ./spl_progs/Interrupts/int15.spl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/create.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xs,
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../expl
+./expl ./expl_progs/delete.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+git add .
 exit
