@@ -6,6 +6,7 @@ if (functionNum == 1) then
     alias pageNumber R3;
     alias blockNum R4;
 
+    // acquire disk
     multipush(R1, R2, R3, R4);
     R1 = 3;
     call RESOURCE_MANAGER;

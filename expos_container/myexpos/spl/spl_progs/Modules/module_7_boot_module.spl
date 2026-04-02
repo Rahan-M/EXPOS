@@ -9,6 +9,8 @@ loadi(8, 21); // console interrupt handler
 loadi(9, 22);
 loadi(10, 23); // INT 4 Module
 loadi(11, 24);
+loadi(12, 25); // INT 5 Module
+loadi(13, 26);
 loadi(14, 27); // INT 6: Read
 loadi(15, 28);
 loadi(16, 29); // INT 7 Module
@@ -33,6 +35,8 @@ loadi(42, 55); // Module 1, Process Manager
 loadi(43, 56);
 loadi(44, 57); // Module 2, Memory Manager
 loadi(45, 58);
+loadi(46, 59); // Module 3, File Manager
+loadi(47, 60);
 loadi(48, 61); // Module 4, Device Manager
 loadi(49, 62);
 loadi(50, 63); // Module 5, Scheduler
@@ -163,6 +167,14 @@ while (i < MAX_BUFFER) do
     [BUFFER_TABLE + i * 4 + 0] = -1;
     [BUFFER_TABLE + i * 4 + 1] = 0;
     [BUFFER_TABLE + i * 4 + 2] = -1;
+    i = i + 1;
+endwhile;
+
+// initialization of open file table
+i = 0;
+while (i < MAX_OPENFILE_NUM) do
+    [OPEN_FILE_TABLE + i * 4 + 0] = -1;
+    [OPEN_FILE_TABLE + i * 4 + 1] = 0;
     i = i + 1;
 endwhile;
 
