@@ -1,21 +1,3 @@
-exit
-cd myexpos/spl
-./spl ./spl_progs/Modules/module_1_process_manager.
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-./spl ./spl_progs/Modules/module_5_context_switch.spl
-./spl ./spl_progs/Modules/module_7_boot_module.spl
-./spl ./spl_progs/Interrupts/int8.spl 
-./spl ./spl_progs/Interrupts/int8.spl 
-./spl ./spl_progs/Interrupts/int8.spl 
-./spl ./spl_progs/Interrupts/int10.spl 
-./spl ./spl_progs/Interrupts/int10.spl 
-cd ../xfs-interface/
-./xfs-interface 
-clear
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xfs-interface/
 ./xfs-interface 
 cd ../expl
 ./expl ./expl_progs/init.expl 
@@ -497,4 +479,22 @@ cd myexpos/xfs-interface/
 cd ../xsm
 ./xsm
 clear
+exit
+cd myexpos/spl
+./spl ./spl_progs/Modules/module_3_file_manager.
+./spl ./spl_progs/Modules/module_3_file_manager.spl
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+./spl ./spl_progs/Interrupts/int7_write.spl 
+exit
+cd myexpos/spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+eixt
 exit

@@ -47,6 +47,27 @@ if(functionNum==2) then
     return;
 endif;
 
+if(functionNum==3) then
+    // get free block
+    // we search for a free entry in disk free DISK_FREE_LIST
+    // DISK_FREE_AREA gives starting block number for user blocks
+    // DISK_SWAP_AREA gives starting block number of swap area
+    alias i R2;
+    i=DISK_FREE_AREA;
+    while(i<DISK_SWAP_AREA) do
+        if([DISK_FREE_LIST+i]==0) then
+            [DISK_FREE_LIST + i]=1;
+            break;
+        endif;
+        i=i+1;
+    endwhile; 
+    if(i==DISK_SWAP_AREA) then
+        i=-1;
+    endif;
+    R0=i;
+    return;
+endif;
+
 if(functionNum==4) then
     // release block function
     alias blockNo R2;
