@@ -72,7 +72,7 @@ endwhile;
 [MEMORY_FREE_LIST + 80] = 1;
 [MEMORY_FREE_LIST + 81] = 1;
 [MEMORY_FREE_LIST + 82] = 1;
-[SYSTEM_STATUS_TABLE + 0] = 1;
+[SYSTEM_STATUS_TABLE + 0] = 1; // 1 is the userID of root
 [SYSTEM_STATUS_TABLE + 2] = 45;
 [SYSTEM_STATUS_TABLE + 3] = 0;
 

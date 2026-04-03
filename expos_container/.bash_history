@@ -1,10 +1,3 @@
-./spl ./spl_progs/interrupts/int9.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-./xsm
-./xsm
 exit
 cd myexpos/spl
 ./spl ./spl_progs/Modules/module_1_process_manager.
@@ -497,4 +490,11 @@ cd ../xfs-interface/
 ./xfs-interface 
 cd ../xsm
 ./xsm
+exit
+cd myexpos/xfs-interface/
+./xfs-interface 
+./xfs-interface 
+cd ../xsm
+./xsm
+clear
 exit
