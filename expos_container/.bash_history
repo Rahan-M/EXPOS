@@ -1,116 +1,3 @@
-./xfs-interface 
-cd ../expl
-./expl ./expl_progs/init.expl 
-./expl ./expl_progs/init.expl 
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-./xsm
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../expl
-./expl
-./expl ./expl_progs/init.expl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ..
-cd xfs-interface/
-./xfs-interface 
-cd ../xfs-interface/
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-exit
-cd myexpos/xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xfs-interface/
-./xfs-interface 
-cd ../spl
-./spl ./spl_progs/Modules/module_5_context_switch.
-./spl ./spl_progs/Modules/module_5_context_switch.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int10.spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-./spl ./spl_progs/Modules/module_7_boot_module.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../expl
-./expl ./expl_progs/init.expl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_7_boot_module.spl
-cd ..
-cd xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xsm
-cd ../spl
-./spl
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-exit
-cd myexpos/
-cd ../xfs
-cd xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_5_context_switch.spl
-exit
-cd myexpos/xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int10.spl
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xfs-interface/
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
 cd ../xsm
 ./xsm
 cd ../spl
@@ -497,4 +384,117 @@ exit
 cd myexpos/spl
 ./spl ./spl_progs/Modules/module_2_memory_manager.spl
 eixt
+exit
+cd myexpos/xsm
+./xsm
+./xsm
+./xsm
+clear
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl 
+./spl ./spl_progs/Interrupts/int15.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage25/assgn25_1.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage25/25_1.expl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../expl
+./expl ./expl_progs/stage25/25_1.expl
+./expl ./expl_progs/stage25/25_1.expl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage25/25_1.expl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xfs-interface 
+cd ../xfs-interface/
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_3_file_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+clear
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+./spl ./spl_progs/Modules/module_3_file_manager.spl
+./spl ./spl_progs/Interrupts/int5.spl
+./spl ./spl_progs/Interrupts/int7_write.spl
+./spl ./spl_progs/Interrupts/int15.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+clear
+git add .
+clear
 exit
