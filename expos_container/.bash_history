@@ -1,56 +1,3 @@
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-./xfs-interface 
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs
-./xfs-interface
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
 ./spl ./spl_progs/Interrupts/int8.spl
 ./spl ./spl_progs/Interrupts/int8.spl
 ./spl ./spl_progs/Interrupts/int8.spl
@@ -496,5 +443,58 @@ cd ../xfs-interface/
 ./xfs-interface 
 clear
 git add .
+clear
+exit
+cd myexpos/spl
+./spl ./spl_progs/Modules/module_1
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+./spl ./spl_progs/Interrupts/int15.spl
+./spl ./spl_progs/Interrupts/int5.spl
+./spl ./spl_progs/Interrupts/int7_write.spl
+cd ../xf
+cd ../xfs-interface/
+./xfs-interface 
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_2_memory_manager.spl
+cd ../xfs-interface/
+run ./xfs-interface 
+./xfs-interface 
+cd ../xs
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_3_file_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Interrupts/int7_write.spl
+./spl ./spl_progs/Interrupts/int5.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Interrupts/int7_write.spl
+cd ../xfs-interface/
+run ./batch_files/run_st24
+./xfs-interface 
+cd ../xsm
+/xsm
+./xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
 clear
 exit
