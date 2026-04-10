@@ -1,30 +1,3 @@
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
 cd ../xsm
 ./xsm
 cd ./spl
@@ -497,4 +470,31 @@ cd ../xfs-interface/
 cd ../xsm
 ./xsm
 clear
+exit
+cd myexpos/expl
+./expl ./expl_progs/stage25/25_3.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage25/25_4.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xfs-interface/
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/shell/cat.expl 
+./expl ./expl_progs/shell/cp.expl 
+./expl ./expl_progs/shell/rm.expl 
+./expl ./expl_progs/shell/ls.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xfs-interface/
+cd ../xsm
+./xsm
+clear
+./xsm
+./xsm --timer 1024
 exit
