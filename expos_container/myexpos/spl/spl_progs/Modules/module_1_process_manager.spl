@@ -157,13 +157,14 @@ if (functionNumber == 5) then // kill All
         endif;
         i = i + 1;
     endwhile;
-
+    
     i = 2;
-    while (i < MAX_PROC_NUM - 1) do
-        if ([PROCESS_TABLE + 16 * i + 1] != currentPID && [PROCESS_TABLE + 16 * i + 4] != TERMINATED) then
+    while (i < MAX_PROC_NUM) do
+        if (i != currentPID && [PROCESS_TABLE + 16 * i + 4] != TERMINATED) then
+            print(i);
             multipush(R1, R2, R5);
-            R1 = 3;
             R2 = i;
+            R1 = 3;
             call PROCESS_MANAGER;
             multipop(R1, R2, R5);
         endif;
