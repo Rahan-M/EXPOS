@@ -146,6 +146,6 @@ int main()
     //which contains numbers from 1 to 2048 in sorted order
     x=merge("merge.dat", "tempa.dat", "tempb.dat");
 
-    return 1;
+    return 0;
   end
 }

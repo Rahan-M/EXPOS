@@ -1,24 +1,5 @@
 cd ../xsm
 ./xsm
-cd ./spl
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../spl
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-./spl ./spl_progs/Interrupts/int8.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
 cd ../spl
 ./spl ./spl_progs/Interrupts/int8.spl
 cd ../spl
@@ -497,4 +478,23 @@ cd ../xsm
 clear
 ./xsm
 ./xsm --timer 1024
+exit
+cd myexpos/spl
+./spl ./spl_progs/Modules/module_3_file_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Interrupts/int7_write.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage25/25_4.expl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
 exit

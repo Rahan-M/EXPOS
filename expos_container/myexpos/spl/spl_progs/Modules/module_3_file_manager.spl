@@ -1,64 +1,107 @@
+
 alias functionNumber R1;
 
-if(functionNumber==1 || functionNumber==2) then
-    // buffered write and buffered read
+// Buffer write
+if (functionNumber == 1) then
     alias blockNumber R2;
     alias offset R3;
+    alias wordToWrite R4;
     alias bufferIndex R5;
 
     bufferIndex = blockNumber % MAX_BUFFER;
-    multipush(R0, R1, R2, R3, R4, R5);
-    // acquire buffer
+
+    multipush(R1, R2, R3, R4, R5); //acquire buffer
     R1 = 1;
     R2 = bufferIndex;
-    R3 = [SYSTEM_STATUS_TABLE + 1];
+    R3 = [SYSTEM_STATUS_TABLE+1];
     call RESOURCE_MANAGER;
-    multipop(R0, R1, R2, R3, R4, R5);
+    multipop(R1, R2, R3, R4, R5);
 
-    // buffer stores some other block
-    if ([BUFFER_TABLE + bufferIndex * 4 + 0] != blockNumber) then
-        // block is dirty so write back
-        if ([BUFFER_TABLE + bufferIndex * 4 + 1] == 1) then
-            // disk store
-            multipush(R0, R1, R2, R3, R4, R5);
+
+    if ([BUFFER_TABLE + bufferIndex*4 + 0] != blockNumber) then
+        if ([BUFFER_TABLE + bufferIndex*4 + 1] == 1) then
+            multipush(R1, R2, R3, R4, R5); //disk store
             R1 = 1;
-            R2 = [SYSTEM_STATUS_TABLE + 1];
-            R2 = 71 + bufferIndex;
-            R3 = [BUFFER_TABLE + bufferIndex * 4 + 0];
+            R2 = [SYSTEM_STATUS_TABLE+1];
+            R3 = 71 + bufferIndex;
+            R4 = [BUFFER_TABLE + bufferIndex*4 + 0];
             call DEVICE_MANAGER;
-            multipop(R0, R1, R2, R3, R4, R5);
-            [BUFFER_TABLE + bufferIndex * 4 + 1] = 0;
+            multipop(R1, R2, R3, R4, R5);
+
+            [BUFFER_TABLE + bufferIndex*4 + 1] = 0;
         endif;
-        // disk load function
-        multipush(R0, R1, R2, R3, R4, R5);
+        multipush(R1, R2, R3, R4, R5); // disk load
         R1 = 2;
         R4 = blockNumber;
-        R2 = [SYSTEM_STATUS_TABLE + 1];
+        R2 = [SYSTEM_STATUS_TABLE+1];
         R3 = 71 + bufferIndex;
         call DEVICE_MANAGER;
-        multipop(R0, R1, R2, R3, R4, R5);
-
-        [BUFFER_TABLE + bufferIndex * 4 + 0] = blockNumber;
+        multipop(R1, R2, R3, R4, R5);
+        [BUFFER_TABLE + bufferIndex*4 + 0] = blockNumber;
     endif;
+    
+    [(71 + bufferIndex)*512 + offset] = wordToWrite;
+    
+    [BUFFER_TABLE + bufferIndex*4 + 1] = 1;
 
-    if(functionNumber==1) then
-        alias word R4;
-        [(71 + bufferIndex) *512 + offset] = word;
-        [BUFFER_TABLE + bufferIndex*4 + 1] = 1;
-    else
-        alias memAddress R4;
-        [memAddress] = [(71 + bufferIndex) * 512 + offset];
-    endif;
-
-    // release buffer
-    multipush(R0, R1, R2, R3, R4, R5);
+    multipush(R1, R2, R3, R4, R5);
     R1 = 2;
     R2 = bufferIndex;
-    R3 = [SYSTEM_STATUS_TABLE + 1];
-    call RESOURCE_MANAGER; 
-    multipop(R0, R1, R2, R3, R4, R5);
+    R3 = [SYSTEM_STATUS_TABLE+1];  
+    call RESOURCE_MANAGER;
+    multipop(R1, R2, R3, R4, R5);
+    
+    return;
 endif;
 
+// Buffer read
+if (functionNumber == 2) then
+    alias blockNumber R2;
+    alias offset R3;
+    alias memAddress R4;
+    alias bufferIndex R5;
+    bufferIndex = blockNumber % MAX_BUFFER;
+    multipush(R1, R2, R3, R4, R5);
+    R1 = 1;
+    R2 = bufferIndex;
+    R3 = [SYSTEM_STATUS_TABLE+1];
+    call RESOURCE_MANAGER;
+    multipop(R1, R2, R3, R4, R5);
+
+    alias BUFFER_TABLEEntry R6;
+    BUFFER_TABLEEntry = BUFFER_TABLE + bufferIndex*4;
+
+    if ([BUFFER_TABLEEntry + 0] != blockNumber) then
+        if ([BUFFER_TABLEEntry + 1] == 1) then
+            multipush(R1, R2, R3, R4, R5, R6);
+            R1 = 1;
+            R2 = [SYSTEM_STATUS_TABLE+1];
+            R3 = 71 + bufferIndex;
+            R4 = [BUFFER_TABLEEntry + 0];
+            call DEVICE_MANAGER;
+            multipop(R1, R2, R3, R4, R5, R6);
+
+            [BUFFER_TABLEEntry + 1] = 0;
+        endif;
+        multipush(R1, R2, R3, R4, R5, R6);
+        R1 = 2;
+        R4 = blockNumber;
+        R2 = [SYSTEM_STATUS_TABLE+1];
+        R3 = 71 + bufferIndex;
+        call DEVICE_MANAGER;
+        multipop(R1, R2, R3, R4, R5, R6);
+
+        [BUFFER_TABLEEntry + 0] = blockNumber;
+    endif;
+
+    [memAddress] = [(71 + bufferIndex)*512 + offset];
+    multipush(R1, R2, R3, R4, R5, R6);
+    R1 = 2;
+    R2 = bufferIndex;
+    R3 = [SYSTEM_STATUS_TABLE+1];  
+    call RESOURCE_MANAGER;
+    multipop(R1, R2, R3, R4, R5, R6);
+endif;
 
 if (functionNumber == 3) then // open function
     alias fileName R2;
@@ -128,9 +171,10 @@ if (functionNumber == 3) then // open function
             endif;
         endif;
     endif;
+    return;
 endif;
 
-if (functionNumber == 4) then
+if (functionNumber == 4) then // close function
     alias openFileTableEntry R2;
     alias inodeIndex R3;
     inodeIndex = [OPEN_FILE_TABLE + openFileTableEntry * 4];
