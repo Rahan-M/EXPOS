@@ -47,6 +47,8 @@ loadi(48, 61); // Module 4, Device Manager
 loadi(49, 62);
 loadi(50, 63); // Module 5, Scheduler
 loadi(51, 64); 
+loadi(52, 65); // Module 6, Pager
+loadi(53, 66); 
 loadi(59, 3);  // inode user table
 loadi(60, 4);
 loadi(61, 2); // Disk Free List
@@ -214,15 +216,22 @@ diskMapTable = DISK_MAP_TABLE + 20;
 [MEMORY_FREE_LIST + 80] = 1;
 
 //setting all other processes to terminated
-i = 3;
+i = 0;
 while (i < 16) do
-    [PROCESS_TABLE + 16 * i + 4] = TERMINATED;
+    [PROCESS_TABLE + 16*i] = 0;
+    if(i>=3) then
+        [PROCESS_TABLE + 16 * i + 4] = TERMINATED;
+    endif;
     i = i + 1;
 endwhile;
 
+
+MEM_FREE_COUNT=45;
 [TERMINAL_STATUS_TABLE] = 0;
 [DISK_STATUS_TABLE] = 0;
 [SYSTEM_STATUS_TABLE + 2] = 47;
 [SYSTEM_STATUS_TABLE + 3] = 0;
+[SYSTEM_STATUS_TABLE + 4] = 0;
+[SYSTEM_STATUS_TABLE + 5] = 0;
 
 return;
