@@ -145,13 +145,13 @@ if(fno==2) then
             if(blockNo!=-1) then
                 alias pageNo R7;
                 multipush(R1, R2, R3, R4, R5, R6);
-                R1=1;
+                R1=GET_FREE_PAGE;
                 call MOD_2;
                 pageNo=R0;
                 multipop(R1, R2, R3, R4, R5, R6);
 
                 multipush(R1, R2, R3, R4, R5, R6, R7);
-                R1=2;
+                R1=DISK_LOAD;
                 R2=PID;
                 R3=pageNo;
                 R4=blockNo;
@@ -159,7 +159,7 @@ if(fno==2) then
                 multipop(R1, R2, R3, R4, R5, R6, R7);
 
                 multipush(R1, R2, R3, R4, R5, R6, R7);
-                R1=4;
+                R1=RELEASE_BLOCK;
                 R3=PID;
                 R2=blockNo;
                 call MOD_2;
