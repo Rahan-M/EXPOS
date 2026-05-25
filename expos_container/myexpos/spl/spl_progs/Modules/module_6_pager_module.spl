@@ -1,0 +1,110 @@
+alias fno R1;
+alias pid R2;
+
+if(fno==1) then
+    // swap out
+    alias i R3;
+    i=3; // idle login and shell can't be swapped out
+
+    alias waitPID R4;
+    waitPID=-1;
+
+    alias maxTickPID R5;
+    maxTickPID=-1;
+    alias maxTICK R6;
+    maxTICK=-1;
+
+    alias swapPID R7;
+    swapPID=-1;
+
+    while(i<MAX_PROC_NUMBER-1) done
+        if([PROCESS_TABLE + i*16 + 6]==0) then // not swapped
+            if([PROCESS_TABLE + i*16 + 4]==WAIT_PROCESS)then
+                swapPID=i;
+                break;
+            else
+                if([PROCESS_TABLE + i*16 + 4]==WAIT_SEM) then
+                    WAIT_PID=i;
+                endif;
+            endif;
+            alias tempPCB=PROCESS_TABLE + i*16;
+            if([tempPCB+4]!=TERMINATED && [tempPCB+4]!=ALLOCATED &&[tempPCB]>maxTICK) then
+                maxTICK=[PROCESS_TABLE + i*16];
+                maxTickPID=i;
+            endif;
+        endif;
+        i=i+1;
+    endwhile;
+
+    if(swapPID==-1) then
+        if(waitPID!=-1)then
+            swapPID=waitPID;
+        else
+            swapPID=maxTickPID;
+        endif;
+    endif;
+
+    if(swapPID==-1) then
+        [SYSTEM_STATUS_TABLE+5]=0;
+        R0=-1;
+        return;
+    endif;
+
+    // reset tick field to 0
+    [PROCESS_TABLE + 16*swapPID] = 0;
+    
+    alias swapPTBR R8;
+    swapPTBR = [PROCESS_TABLE + 16*swapPID + 14];
+    
+    i=4;
+    alias pageNo R8;
+    while(i<20) do
+        pageNo=[swapPTBR + i];
+        
+        // heap page or stack page
+        if(i<8 || i>15) then
+            // valid and non shared
+            alias blockNo R9;
+            if(pageNo!=-1 && [MEMORY_FREE_LIST + i]==1) then
+                multipush(R1, R2, R3, R4, R5, R6, R7, R8);
+                R1=6;
+                call MOD_2;
+                blockNo=R0;
+                multipop(R1, R2, R3, R4, R5, R6, R7, R8);
+
+                [DISK_MAP_TABLE + 10*swapPID + counter/2]=blockNo;
+
+                multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9);
+                R1=1;
+                R2=SWAPPER_DAEMON; // PID
+                R3=pageNo;
+                R4=blockNo;
+                call MOD_4;
+                multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9);
+            endif;
+        endif;
+
+        // non heap page or non shared heap page
+        if(pageNo!=-1 && (i>7 || [MEMORY_FREE_LIST+i]==1)) then
+            multipush(R1, R2, R3, R4, R5, R6, R7);
+                R1=2
+                R2=[pageNo];
+                call MOD_2;
+            multipop(R1, R2, R3, R4, R5, R6, R7);
+        endif;
+        [swapPTBR + i] = -1;
+        [swapPTBR + i + 1] = "0000";
+        i=i+2;
+    endwhile;
+    
+    [PROCESS_TABLE + 16*swapPID + 6]=1;
+    [SYSTEM_STATUS_TABLE + 4] = [SYSTEM_STATUS_TABLE + 4] + 1;
+    [SYSTEM_STATUS_TABLE + 5] = 0;
+    return;
+endif;
+
+if(fno==2) then
+    // swap in
+
+endif;
+return;

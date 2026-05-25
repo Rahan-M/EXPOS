@@ -1,12 +1,3 @@
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int14.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
 ./spl ./spl_progs/Interrupts/int8_fork.spl
 cd ../xfs-interface/
 ./xfs-interface 
@@ -497,4 +488,13 @@ clear
 exit
 cd myexpos/xsm
 ./xsm
+exit
+cd myexpos/xsm
+./xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+clear
 exit
