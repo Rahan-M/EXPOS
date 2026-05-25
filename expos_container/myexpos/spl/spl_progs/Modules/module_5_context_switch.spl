@@ -15,13 +15,40 @@ SP=SP+1;
 [process_table_entry + 15] = PTLR;
 
 alias nextPID R2;
-nextPID=(currentPID+1)%16;
-while(nextPID!=currentPID) do
-    if([PROCESS_TABLE + 16*nextPID + 4] == READY || [PROCESS_TABLE + 16*nextPID + 4] == CREATED) then
-        break;
+nextPID=0;
+if([SYSTEM_STATUS_TABLE+5]!=0) then
+    if([PROCESS_TABLE + SWAPPER_DAEMON*16 + 4]!=READY)then
+        nextPID=0;
+    else
+        nextPID=SWAPPER_DAEMON;
     endif;
-    nextPID=(nextPID+1)%16;
-endwhile;
+else
+    nextPID=(currentPID+1)%16;
+    alias state R3;
+    while (nextPID < 15) do
+        state = [PROCESS_TABLE + nextPID * 16 + 4];
+        if ((state == READY || state == CREATED) && [PROCESS_TABLE + nextPID * 16 + 6] != 1) then
+            break;
+        endif;
+        nextPID= nextPID+ 1;
+    endwhile;
+
+    if (nextPID == 15) then
+        nextPID = 1;
+        while (nextPID < currentPID) do
+            state = [PROCESS_TABLE + nextPID * 16 + 4];
+            if ((state == CREATED || state == READY) && [PROCESS_TABLE + nextPID * 16 + 6] != 1) then
+                break;
+            endif;
+            nextPID = nextPID + 1;
+        endwhile;
+    endif;
+
+    if (nextPID == currentPID) then
+        nextPID = 0;
+    endif;
+endif;
+
 
 alias new_process_table R3;
 new_process_table = PROCESS_TABLE + nextPID * 16;
