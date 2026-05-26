@@ -1,19 +1,3 @@
-./spl ./spl_progs/Interrupts/int8_fork.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_0_resource_manager.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./sm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_0_resource_manager.spl
-cd ../xfs-interface/
-./xfs-interface 
 cd ../xsm
 cd ../xfs-interface/
 ./xfs-interface 
@@ -497,4 +481,20 @@ cd ../xfs-interface/
 cd ../xsm
 ./xsm
 clear
+exit
+cd myexpos/xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_5_context_switch.
+./spl ./spl_progs/Modules/module_5_context_switch.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+clear
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
 exit

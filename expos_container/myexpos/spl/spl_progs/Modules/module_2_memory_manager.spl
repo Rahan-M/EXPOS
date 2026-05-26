@@ -122,12 +122,12 @@ endif;
 if(functionNum==6) then
     alias i R2;
     i=DISK_SWAP_AREA;
-    while(i<DISK_SIZE) then
+    while(i<DISK_SIZE) do
         if([DISK_FREE_LIST + i]==0) then
             break;
         endif;
         i=i+1;
-    endif;
+    endwhile;
 
     if(i==DISK_SIZE) then
         R0=-1;
