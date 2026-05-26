@@ -1,34 +1,3 @@
-./spl ./spl_progs/Interrupts/int5.spl
-./spl ./spl_progs/Interrupts/int7_write.spl
-./spl ./spl_progs/Interrupts/int15.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../xsm
-./xsm
-cd ../xfs-interface/
-./xfs-interface 
-clear
-git add .
-clear
-exit
-cd myexpos/spl
-./spl ./spl_progs/Modules/module_1
-./spl ./spl_progs/Modules/module_1_process_manager.spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-./spl ./spl_progs/Interrupts/int15.spl
-./spl ./spl_progs/Interrupts/int5.spl
-./spl ./spl_progs/Interrupts/int7_write.spl
-cd ../xf
-cd ../xfs-interface/
-./xfs-interface 
-./xfs-interface 
-cd ../xsm
 ./xsm
 cd ../spl
 ./spl ./spl_progs/Modules/module_2_memory_manager.spl
@@ -496,5 +465,36 @@ cd ../xfs-interface/
 cd ../xsm
 ./xsm
 clear
+clear
+exit
+cd myexpos/xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd myexpos/xfs-interface/
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+./xsm
+./xsm
+cd ../spl
+./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
 clear
 exit
