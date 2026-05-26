@@ -1,7 +1,7 @@
 alias fno R1;
 alias PID R2;
 
-if(fno==1) then
+if(fno==SWAP_OUT) then
     // swap out
     alias i R3;
     i=3; // idle login and shell can't be swapped out
@@ -17,31 +17,34 @@ if(fno==1) then
     alias swapPID R7;
     swapPID=-1;
 
-    while(i<MAX_PROC_NUM-1) do
-        if([PROCESS_TABLE + i*16 + 6]==0) then // not swapped
-            if([PROCESS_TABLE + i*16 + 4]==WAIT_PROCESS)then
-                swapPID=i;
+    while (i < MAX_PROC_NUM - 1) do
+        if ([PROCESS_TABLE + i*16 + 6] == 0) then
+            if ([PROCESS_TABLE + i*16 + 4] == WAIT_PROCESS) then
+                swapPID = i;
                 break;
-            else
-                if([PROCESS_TABLE + i*16 + 4]==WAIT_SEMAPHORE) then // *
-                    waitPID=i;
+            endif;
+            if (waitPID == -1 && [PROCESS_TABLE + i*16 + 4] == WAIT_SEMAPHORE) then
+                waitPID = i;
+            endif;
+
+            alias tempPCB R13;
+            tempPCB = PROCESS_TABLE + i*16;
+            if ([tempPCB+4] != TERMINATED && [tempPCB+4] != ALLOCATED && [tempPCB + 4] != RUNNING) then
+                if ([tempPCB] > maxTICK) then
+                    maxTICK = [tempPCB];
+                    maxTickPID = i;
                 endif;
             endif;
-            alias tempPCB R10;
-            tempPCB=PROCESS_TABLE + i*16;
-            if([tempPCB+4]!=TERMINATED && [tempPCB+4]!=ALLOCATED && [tempPCB]!=RUNNING &&[tempPCB]>maxTICK) then
-                maxTICK=[PROCESS_TABLE + i*16];
-                maxTickPID=i;
-            endif;
         endif;
-        i=i+1;
+        i = i + 1;
     endwhile;
 
-    if(swapPID==-1) then
-        if(waitPID!=-1)then
-            swapPID=waitPID;
+
+    if (swapPID == -1) then
+        if (waitPID != -1) then
+            swapPID = waitPID;
         else
-            swapPID=maxTickPID;
+            swapPID = maxTickPID;
         endif;
     endif;
 
@@ -65,33 +68,33 @@ if(fno==1) then
         // heap page or stack page
         if(i<8 || i>15) then
             // valid and non shared
-            alias blockNo R9;
-            if(pageNo!=-1 && [MEMORY_FREE_LIST + i]==1) then
-                multipush(R1, R2, R3, R4, R5, R6, R7, R8);
+            alias blockNo R10;
+            if(pageNo!=-1 && [MEMORY_FREE_LIST + pageNo]==1) then
+                multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9);
                 R1=GET_SWAP_BLOCK;
                 call MOD_2;
                 blockNo=R0;
-                multipop(R1, R2, R3, R4, R5, R6, R7, R8);
+                multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9);
 
                 [DISK_MAP_TABLE + 10*swapPID + i/2]=blockNo;
 
-                multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9);
+                multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10);
                 R1=DISK_STORE;
                 R2=SWAPPER_DAEMON; // PID
                 R3=pageNo;
                 R4=blockNo;
                 call MOD_4;
-                multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9);
+                multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10);
             endif;
         endif;
 
         // non heap page or non shared heap page
-        if(pageNo!=-1 && [MEMORY_FREE_LIST+i]==1) then
-            multipush(R1, R2, R3, R4, R5, R6, R7);
+        if(pageNo!=-1 && [MEMORY_FREE_LIST+pageNo]==1) then
+            multipush(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10);
                 R1=RELEASE_PAGE;
-                R2=[pageNo];
+                R2=pageNo;
                 call MOD_2;
-            multipop(R1, R2, R3, R4, R5, R6, R7);
+            multipop(R1, R2, R3, R4, R5, R6, R7, R8, R9, R10);
         endif;
         [swapPTBR + i] = -1;
         [swapPTBR + i + 1] = "0000";

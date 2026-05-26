@@ -12,9 +12,6 @@ SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 11] * 512 - 1;
 // into the kernel stack before the call. 
 backup;
 
-// It also assumes that the state of the process has been changed to READY
-[PROCESS_TABLE + ( [SYSTEM_STATUS_TABLE + 1] * 16) + 4] = READY;
-
 // However, the machine's SP register will still point to the top of the 
 // kernel stack of the currently running process at the time of the call.
 
@@ -48,6 +45,8 @@ else
     endif;
 endif;
 
+// mod5 also assumes that the state of the process has been changed to READY
+[PROCESS_TABLE + ( [SYSTEM_STATUS_TABLE + 1] * 16) + 4] = READY; // should come after the above stuff
 
 // increment tick for all non terminated processes
 alias i R6;
