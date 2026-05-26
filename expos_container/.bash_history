@@ -1,26 +1,3 @@
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_2_memory_manager.spl
-cd ../xfs-interface/
-run ./xfs-interface 
-./xfs-interface 
-cd ../xs
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Modules/module_3_file_manager.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
-./spl ./spl_progs/Interrupts/int7_write.spl
-./spl ./spl_progs/Interrupts/int5.spl
-cd ../xfs-interface/
-./xfs-interface 
-cd ../xsm
-./xsm
-cd ../spl
 ./spl ./spl_progs/Interrupts/int7_write.spl
 cd ../xfs-interface/
 run ./batch_files/run_st24
@@ -492,6 +469,29 @@ cd ../xsm
 ./xsm
 cd ../spl
 ./spl ./spl_progs/Modules/module_1_process_manager.spl
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+clear
+exit
+cd myexpos/expl
+./expl ./expl_progs/stage27_assgn/delay.expl 
+./expl ./expl_progs/stage27_assgn/delay.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage27_assgn/pgm1.expl 
+./expl ./expl_progs/stage27_assgn/27_3.expl 
+cd ../xfs-interface/
+./xfs-interface 
+cd ../xsm
+./xsm
+cd ../expl
+./expl ./expl_progs/stage27_assgn/merge.expl 
+./expl ./expl_progs/stage27_assgn/merge.expl 
 cd ../xfs-interface/
 ./xfs-interface 
 cd ../xsm
