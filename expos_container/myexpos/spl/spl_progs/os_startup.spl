@@ -92,15 +92,15 @@ PTLR = 10;
 
 [81 * 512] = [69 * 512 + 1];
 
-// setting up process table for IDLE
-[PROCESS_TABLE + 1] = 15; // process id of IDLE is 0
-[PROCESS_TABLE + 3] = 0; // userid of kernel
-[PROCESS_TABLE + 4] = RUNNING;
-[PROCESS_TABLE + 11] = 76;
-[PROCESS_TABLE + 13] = 8 * 512;
-[PROCESS_TABLE + 12] = 0;
-[PROCESS_TABLE + 14] = PAGE_TABLE_BASE;
-[PROCESS_TABLE + 15] = 10;
+// setting up process table for swapper daemon
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 1] = 15; // process id of IDLE is 0
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 3] = 0; // userid of kernel
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 4] = CREATED;
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 11] = 82;
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 12] = 0;
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 13] = 8 * 512;
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 14] = PTBR;
+[PROCESS_TABLE + SWAPPER_DAEMON*16 + 15] = 10;
 
 PTBR=PAGE_TABLE_BASE;
 PTLR=10;
